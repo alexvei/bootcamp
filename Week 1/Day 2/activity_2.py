@@ -3,4 +3,4 @@
 # now say the same logic, and find that my birthday is on the 5*30 + 2th day.
 # hence it will take:
 
-#print(365 - (7*30+16) + (5*30 + 2))
+print(365 - (7*30+16) + (5*30 + 2))
