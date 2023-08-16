@@ -25,7 +25,8 @@ def machine():
                 if cont == 'y':
                     pass;
                 elif cont == 'n':
-                    break;
+                    print("Alright! Bye!")
+                    return
                 else:
                     print("Enter 'y' for yes or 'n' for no please.")
 
@@ -54,9 +55,10 @@ def withdraw(amount):
             print("Okay bye!")
             break;
         else:
-            print(f'Money withdrawn: £{withdr}.')
-            print(f'New balance: £{amount-withdr}.')
             money = amount-withdr
+            print(f'Money withdrawn: £{withdr}.')
+            print(f'New balance: £{money}.')
+            
             break;
 
 
