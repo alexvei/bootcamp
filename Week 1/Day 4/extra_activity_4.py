@@ -8,6 +8,5 @@ def list_of_numbers(the_list):
     return another_list
 
 
-
 a_list = [3, 10, 24]
 print(list_of_numbers(a_list))

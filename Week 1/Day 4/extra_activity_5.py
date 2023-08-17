@@ -1,12 +1,8 @@
-
-
-def find_numbers(listie):
+def find_numbers(lista):
     b_list = []
-    for i in range(0, len(listie)):
-        if 30 <= listie[i] <= 400:
-            b_list.append(listie[i])
-        else:
-            pass
+    for i in range(0, len(lista)):
+        if 30 <= lista[i] <= 400:
+            b_list.append(lista[i])
 
     return b_list
 

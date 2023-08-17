@@ -7,18 +7,11 @@ def string_converter(number_list):
         string_list.append(f'{number_list[i]}')
     
     return string_list
-numbers = [
-    random.randint(1, 100),
-    random.randint(1, 100),
-    random.randint(1, 100),
-    random.randint(1, 100),
-    random.randint(1, 100),
-    random.randint(1, 100),
-    random.randint(1, 100),
-    random.randint(1, 100),
-    random.randint(1, 100),
-    random.randint(1, 100),
-]
 
+numbers = []
+while (len(numbers)< 10):
+    numbers.append(random.randint(1, 100))
+
+print(f"Integers list: {numbers}")
 converted_numbers = string_converter(numbers)
-print(converted_numbers)
+print(f"Strings list: {converted_numbers}")
