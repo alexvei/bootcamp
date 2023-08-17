@@ -15,3 +15,5 @@ songs = [
 ]
 
 print(songs)
+songs.pop()
+print(songs)
