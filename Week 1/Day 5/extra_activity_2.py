@@ -7,6 +7,7 @@ def multi_table(num):
     for i in range(1,13):
         product = num * i
         a_list.append(product)
+        
     table_list.append(a_list)
 
 
