@@ -1,6 +1,7 @@
 def multiplication_table(num):
     for i in range(1,13):
-        print(num*i)
+        product = num*i
+        print(f'{num}x{i}={product}')
 
 def question(a):
     a = input("Would you like to get the table for a different number?(y/n) ")
