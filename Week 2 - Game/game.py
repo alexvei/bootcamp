@@ -32,9 +32,9 @@ def dung_explore_1():
             print("\tYou've gained 1 life!", f"Total: {life}.")
             contin()
             life_system(1)
-            return 1
+            return True
         elif choice == 'n':
-            return 1
+            return True
         else:
             print("y/n only.")
 
@@ -119,16 +119,66 @@ def entry_room():
                 "\tTake this vessel to serve as a way to return from the plain of death and venture on, valiant soul.\n")
                 slow_writting(success_message)
                 contin()
-                return True
+                return entry_room_explore()
             else:
                 life_system(0)
                 if life == 0:
                     print("Your heart is not pure, you will not survive. Leave this place and suffer the curse of Akarak!")
                     contin()
                     return False
-                             
         else:
             print("Type only A, B or C.")
+
+
+def entry_room_explore():
+    explore_message = ("\tThe Akari stands back and lets you gather your surroundings.\n"
+    "You stand at the base of the tomb, it stands tall as it's in the base of a large mountain, the tomb's door is circular as it rolls sideways to allow you to enter the tomb.\n"
+    "Two pillars stand broken at the entryway, the rubble spreading across the stone path.\n"
+    "The Akari stands leaning against the wall.\n"
+    "Its figure is so tall that you have to lean your neck upwards to see its head. It looks like a stone lion as it merely watches you, it doesn't appear like it wants to talk.\n\n")
+    slow_writting(explore_message)
+    print("You can:")
+    print("\t1.Venture into the tomb,")
+    print("\t\t2.Look at the Pillars")
+    print("\t\t\t3.Try to talk to the Akari.")
+    while(True):
+        try:
+            b_choice = int(input("Choose one of the 3: "))
+            if 1 <= b_choice <= 3:
+                break
+        except ValueError:
+            print("A number please. (1-3)")
+    
+    if b_choice == 1:
+        slow_writting("Venture into the tomb...\n")
+        contin()
+        return 1
+    if b_choice == 2:
+        message = ("You decide to look at the pillars, it seems to be made out of a rich white stone. Marble you would think but you cannot be sure, as you look at each pillar, One crosses your eye as something gleams from its base.\n"
+                   "You pick it up and look at the object. It seems to be a small red clay ball with some carvings and marks dotted all over it. The Akari speaks up.\n"
+                   '"Ah, you found it, A life orb. These can save you from worse situations should they befall you.\n'
+                   'You might be wondering why these items exist in the world for adventurers such as yourself to find.\n'
+                   'Simply put, These were batteries for us Akari used to replenish our stocks.\n'
+                   'I have been stockpiling a few so you may take that one and place it into the vessel I gave you."\n'
+                   "You do as it says, and the thrum of life that erupts from it feels almost invigorating. With your new sense of strength, you instinctively head into the tomb.\n"
+                   "Ready for anything.(Gain +1 Life!)\n")
+        cls()
+        slow_writting(message)
+        life_system(1)
+        contin()
+        return 1
+    if b_choice == 3:
+        print("Your curiosity gets the better of you, as you approach the Akari, it looks down, trying to face you.\n"
+            '"I am confused, mortal."\n'
+            'It speaks.\n'
+            '"Do you not wish to venture deeper into the tomb… To find what you are looking for?"\n'
+            'You nod but are curious about the being.\n'
+            '"Well, I used to be known as Jerico. After the events of my master\'s demise, I stayed with him during his final moments, as he transferred my soul into the vessel you see before you.\n'
+            'Making me an eternal guardian and protector of his home." He squats. "I am honored to have this role." He says, before standing up again.\n'
+            '"Go, claim your treasure, before I change my mind."\n'
+            'You nod, and head in. Enlightened by this experience.\n')
+        contin
+        return 1
 
 
 def globals():
