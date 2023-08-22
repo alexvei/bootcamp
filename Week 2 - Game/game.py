@@ -4,23 +4,28 @@ import sys      # built-in python module for more system stuff
 import time     # built-in python module for time
 
 
-# Global Variables
+# Global Variables #############################################################
 father = 'glaen'
-life = 3
 name = ''
 nor = 'nor'
+life = 3
+################################################################################
 
 
-# Functions
+# Functions ####################################################################
+# Clear the screen
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
 
 
+# Press enter to continue
 def contin():
     input("Press enter to continue...")
     cls()
     
 
+################################################################################
+# Dungeon explore options
 def dung_explore_1():
     explore_message = ("As the far side tomb door raises up, you are left with a room with the Akari and the tombstones and coffins dotted about this place.\n"
     "You wonder what the usage for those were, who the people are inside the coffins and what they did for their master...\n"
@@ -94,9 +99,23 @@ def dung_explore_1():
 
 
 def dung_explore_2(): # Placeholder
+    input("test")
+
+
+def dung_explore_3(): # Placeholder
     pass
 
 
+def dung_explore_4(): # Placeholder
+    pass
+
+
+def dung_explore_5(): # Placeholder
+    pass
+
+
+################################################################################
+# Dungeon puzzles
 def dung_room_1():
     cls()
     message = ("As you enter the tomb...\n"
@@ -134,19 +153,108 @@ def dung_room_1():
         else:
             life_system(0)
             if life == 0:
-                print(""" "You do not know? Perhaps I shall show you!"
-                      As it shouts, the coffins burst open and fleshless beings erupt from them. 
-                      You are surrounded, with no hope to escape as the door shuts behind you.
-                      "You will share the fate of these people... as many others have before"
-                      As the skeletons shove you into a new coffin. And etch your name onto the front.""")
+                fail_message = ("You do not know? Perhaps I shall show you!\n"
+                      "As it shouts, the coffins burst open and fleshless beings erupt from them.\n" 
+                      "You are surrounded, with no hope to escape as the door shuts behind you.\n"
+                      '\"You will share the fate of these people... as many others have before\"\n'
+                      "As the skeletons shove you into a new coffin. And etch your name onto the front.\n\n")
                 contin()
                 return False
 
 
 def dung_room_2(): # Placeholder
+    cls()
+    message = ("As you hop off the last step, you are left with what appears to be a rundown Ritual room.\n"
+    "Books and tomes scatter the floor as bookcases seem to have toppled upon themselves.\n"
+    "You can climb through some of the passageways created by the toppled bookshelves and reach a pedestal.\n"
+    "There sits a book, with a bookmarked page.\n"
+    "You open the book to the page and see it written in fine ink.\n"
+    '"To those that read this and are not of my troupe, I ask this of you, around this room are the remnants of my study. Where I practiced my forbidden magics and held my darkest secrets,\n'
+    'for whatever reason you chose to venture into this sacred place, I ask this of you. Who is the disciple I sent off to the realm of the living,\n'
+    'to explore and learn more about life and death?"\n\n')
+
+    slow_writting(message)
+    while True:
+        print(f"Lives left= {life}")
+        player_answer = input('Answer: ')
+
+        if player_answer.lower() == 'nor': 
+            success_message = ("\tNor... yes... I do miss her... I trust she is finding your realm suitable...\n"
+            "\tI implore you to venture deeper, you seem wiser than the rest...\n"
+            "\tYet if you wish to learn more, read some of the books on this table...\n")
+
+            slow_writting(success_message)
+            contin()
+            return dung_explore_2()
+        
+        else:
+            life_system(0)
+            if life == 0:
+                fail_message = ("You have failed to answer the question correctly in three attempts.\n"
+                            "The book closes on you, the doors closing and leaving you trapped.\n"
+                            "The sigils of the room light up as necrotic energy primates through the air.\n"
+                            "You feel yourself slowly wither, as you watch as the spirit of Akarak guides you to the next life.\n")
+                
+                slow_writting(fail_message)
+                contin()
+                return False   
+
+
+def dung_room_3(): # Placeholder
     input("Test")
 
 
+def dung_room_4(): # Placeholder
+    input("Test")
+
+
+def dung_room_5():
+    cls()
+    message = ("Finally, you arrive at the depths of Akarak's tomb.\n"
+    "A wide open room with a large entry way on both the left and right of the room stands tall.\n"
+    "You notice a large stone coffin in the middle of the room.\n" 
+    "You steel yourself, approaching the coffin and reading it.\n"
+    "\"Akarak, The abandoned lich\" it read.\n" 
+    "Your eyes scan the room around you again, from the middle,\n"
+    "you see a stone tablet on the opposite side of the entryway with empty holes. You seem to see a spot for four letters,\n" 
+    "The tablet had a riddle stored upon it.\n\n"
+                
+    "\"Throughout your journey down in my depths, you have learnt more of my presence in the world. My motives and my treatment of others.\n"
+    "Now I ask this of you, outsider. Fill in the word below the tablet, and it shall allow you into my hoard of treasure.\"\n"
+
+    "Below you see every single letter of the alphabet placed down in a chest.\n" 
+    "Fitting perfectly towards the tablet. What will you spell?\n")
+    
+    slow_writting(message)
+    
+    while True:
+        print(f"Lives left= {life}")
+        player_answer = input('Answer: ')
+
+        if player_answer.lower() == 'wake':
+                success_message = ("The walls rumble as the wall behind the tablet raises. Showing a staff of malicious energies.\n" 
+                "Akarak's focus.\n" 
+                "You take it, and venture outwards, seemingly conquering the challenges.\n")
+                slow_writting(success_message)
+                contin()
+                return dung_explore_5()
+        else:
+            life_system(0)
+            if life == 1:
+                print("Wake up! This is your last chance!")
+            elif life == 0:
+                print("You hear a large opening of the coffin behind you, this shriveled corpse steps out and looks at you.\n" 
+                    "It speaks slowly.\n"
+                    "\"You… have… learnt… NOTHING!\"\n" 
+                    "As the corpse lashes out, grabbing you with lightning speed and pulling you into its resting place.\n" 
+                    "The top of the coffin sliding on top as you are trapped in Akarak's tomb.\n")
+                contin()
+                return False
+
+
+################################################################################
+# Entry room and entry room explore options ####################################
+################################################################################
 def entry_room():
     choices = ["A", "B", "C"]
     global life
@@ -236,8 +344,10 @@ def entry_room_explore():
             'You nod, and head in. Enlightened by this experience.\n')
         contin
         return 1
+################################################################################
 
 
+# Setting/resetting global variables ###########################################
 def globals():
     global father, life, name, nor
     father = 'Glaen'
@@ -245,7 +355,8 @@ def globals():
     nor = 'nor'
 
 
-def life_system(action): # Placeholder
+# Life points give/take
+def life_system(action):
     global life
     if action:
         life += 1
@@ -254,10 +365,12 @@ def life_system(action): # Placeholder
         print("Wrong!")
 
 
-def lost(): # Placeholder
+# Placeholder
+def lost():
     pass
 
 
+# Text animation effect
 def slow_writting(word):
     for c in word:
         sys.stdout.write(c)
@@ -291,7 +404,7 @@ def story_intro():
 
 def welcome_message():
     global name
-    slow_writting("Hello! A text-based adventure game.")
+    slow_writting("\tThe tomb of Akarak.")
     time.sleep(0.2)
     while name == '':
         name = input("\nEnter your name and let's get started: ")
@@ -309,7 +422,7 @@ while True:
     while True:
         chc = input("Do you still want to continue?(y/n) ")
         if chc.lower() == 'y':
-            input(f"Great. Remember, you only have {life} lives. Be careful. \nPress enter to continue...")
+            input(f"Great. Remember, you only have {life} lives. Be careful.\nPress enter to continue...")
             break
         if chc.lower() == 'n':
             print("Bye...")
@@ -319,17 +432,24 @@ while True:
     
     cls()
 
+    # Checks for succ/fail puzzle.
     pass_1 = entry_room()
     pass_2 = False
     pass_3 = False
     pass_4 = False
     pass_5 = False
+    pass_6 = False
 
     if pass_1:
         pass_2 = dung_room_1()
     if pass_2:
         pass_3 = dung_room_2()
-        
+    if pass_3:
+        pass_4 = dung_room_3()
+    if pass_4:
+        pass_5 = dung_room_4()
+    if pass_5:
+        pass_6 = dung_room_5()    
 
 
     #Writing needs to be sped up, for the amount of wording we have, the text crawl needs to be turned into a text walk. Add more time for people to read until going to the next chapter.
