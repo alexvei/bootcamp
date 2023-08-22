@@ -154,19 +154,20 @@ def dung_explore_2(): # This is exploration after puzzle 3
                     "(Gain +1 Life!)\n"
                     f"Total: {life+1} lives.\n"
                     "With this, you head down to the depths, seeing what horors await you.\n")
-           
+            
             cls()
             slow_writting(message)
             contin()
-            life_system()
-            return 0
+            life_system(1)
+            return 1
 
 
 def dung_explore_3(): # This is exploration after puzzle 4
     pass
 
 
-def dung_explore_4(): #should be dung_explore_5 and should be before dung_room_5
+def dung_explore_4(): # This is exploration before puzzle 5
+    global life
     explore_message = ("Finally, you arrive at the depths of Akarak's tomb.\n"
     "A wide open room with a large entry way on both the left and right of the room stands tall.\n"
     "You notice a large stone coffin in the middle of the room.\n" 
@@ -194,31 +195,38 @@ def dung_explore_4(): #should be dung_explore_5 and should be before dung_room_5
         message = ("You look through the large archway, seemingly not seeing much beyond darkness.\n" 
                    "A small glint however shines through. As you walk towards it, you notice it’s a life orb.\n"
                    "You pick it up and add it to your vessel.\n"
-                   "Handy.\n")
-        
+                   "Handy. (Gain +1 Life)\n"
+                   f"Total Lives: {life+1}\n\n")
+        cls()
+        life_system(1)
         slow_writting(message)
         contin()
-        return 1
+        return True
     
     if b_choice == 2:
-        message = ("As you approach the tablet, you see a riddle written on it\n")
-        
-        slow_writting(message)
-        contin()
+        return dung_room_4()
     
     if b_choice == 3:
+        life -= 1
         message = ("You see some gold and jewels littering the sides of the room,\n"
                    "your greed overtakes you as you reach for a pile of gold.\n"
                    "As you touch it, your hand instantly falls off.\n" 
                    "You shriek before seeing a warning carved onto the wall behind the gold.\n"
-                   "\"Touching this hoard will result in the demise of the appendage that touched it.\n"
-                   "Be careful Akari.\" it states.\n" 
-                   "You sigh before pulling out a life vessel, aiming to heal off the damage before you bleed out.\n")
+                   "\"Touching this hoard will result in the demise of the appendage that touched it. Be careful Akari.\" it states.\n" 
+                   "You sigh before pulling out a life vessel, aiming to heal off the damage before you bleed out.\n"
+                   "(Lose 1 Life)\n"
+                   f"Total lives: {life}\n\n")
         
         cls()
         slow_writting(message)
+        
+
+        if life == 0:
+            print("You have no life vessel to help stop the bleeding, you feel your body fail as you fall to the ground. Undone by Greed.")
+            contin()
+            return False
         contin()
-        return 0
+        return True
     
 
 ################################################################################
@@ -313,14 +321,10 @@ def dung_room_3(): # Puzzle 4
 
 def dung_room_4(): # Puzzle 5
     cls()
-    message = ("Finally, you arrive at the depths of Akarak's tomb. A wide open room with a large entry way on both the left and right of the room stands tall.\n"
-                "You notice a large stone coffin in the middle of the room. You steel yourself, approaching the coffin and reading it. \"Akarak, The abandoned lich\" it read\n"
-                "Throughout your journey down in my depths, you have learnt more of my presence in the world.\n"
-                "My motives and my treatment of others.\n"
-                "Now I ask this of you, outsider.\n"
-                "Fill in the word below the tablet, and it shall allow you into my hoard of treasure.\n"
-                "Below you see every single letter of the alphabet placed down in a chest.\n" 
-                "Fitting perfectly towards the tablet. What will you spell?\n")
+    message = ("As you approach the tablet, you see a riddle written on it.\n"
+                "\"Throughout your journey down in my depths, you have learnt more of my presence in the world. My motives and my treatment of others. Now I ask this of you, outsider.\n"
+                "Fill in the word below the tablet, and it shall allow you into my focus.\"\n"
+                "Below you see every single letter of the alphabet placed down in a chest. Fitting perfectly towards the tablet. What will you spell?\n\n")
             
     slow_writting(message)
     
@@ -334,7 +338,7 @@ def dung_room_4(): # Puzzle 5
                                 "You take it, and venture outwards, seemingly conquering the challenges.\n")
             slow_writting(success_message)
             contin()
-            return dung_explore_4()
+            return True
         
         else:
             life_system(0)
@@ -348,61 +352,7 @@ def dung_room_4(): # Puzzle 5
                         "The top of the coffin sliding on top as you are trapped in Akarak's tomb.\n")
                 contin()
                 return False
-
-
-# epilogue
-def finale_part_one():
-    cls()
-    print("Epilogue: Part 1")
-    time.sleep(0.5)
-    message_1 = ("As you grab the focus, you feel its power course through you, This is what you need to save your Father.\n"
-                "You move out of the indent in the wall and head towards the doorway, However. The original entrance to the treasure room has closed behind you.\n"
-                "Confused, you look around as your attention is brought to the large gates. As you peek through, you hear a distant rumbling...\n"
-                "There's a bit of time before you realize a final trap has been placed, as a boulder lands in the door in front of you.\n"
-               "You have to make a mad dash towards the exit now! Quickly run!\n\n")
-    message_2 = ("As you run through the massive entryway, you realize it's a straight shot out to the other side of the mountain,\n" 
-                "traps and pits litter the way as paths converge and change. The twisting corridors and turning caverns throw you out to a pit of spikes.\n" 
-                "A small balance beam stands in front of you. The boulder crashes into the wall behind you, giving you a chance to think about your next move.\n"
-                "What will you do? The Pit looks like you can make it if you jump.\n\n")
-    
-    slow_writting(message_1)
-    contin()
-    slow_writting(message_2)
-
-    print('1."Walk the balance beam"', '2."Jump!"')
-    while True:   
-        try:
-            act = int(input("Action: "))
-            if act == 1 or 2:
-                break
-        except ValueError:
-            print("Enter a number (1 or 2).")
-    
-    if act == 1:
-        message = ("You decide to play it safe, slowly advancing over the balance beam while the boulder slowly picks up momentum behind you.\n"
-                "Thankfully, the wall crash managed to give you enough time to safely get across.\n"
-                "You take a breath before running, the boulder falling into the pit and destroying the beam.\n"
-                "You walk slowly ahead before you hear a familiar crashing sound. As another boulder crashes to the wall behind you.\n"
-                "Safe to say you need to pick up the pace! As there may be more behind you!\n\n")
-
-        cls()
-        slow_writting(message)
-        contin()
-
-        return True
-
-    if act == 2:
-        message = ("Time is against you, you don't have time to cross a rickety beam. You run back, and try to make a jump for it.\n"
-                    "As you fly through the air, the boulder picks up the momentum and starts to roll behind you,\n"
-                    "that throws off your landing as the loud crashing causes you to recoil from the sound.\n"
-                    "As you land, you wobble unsteadily as you land on the edge and topple behind, falling into the pit.\n"
-                    "You land with a thud as the boulder crushes you and the focus. Dooming your father to his withering undeath.\n"
-                    f"(Lose a life)\t Lives left: {life-1}")
-        cls()
-        slow_writting(message)
-        contin()
-        life_system(0)
-        return True    
+            
 
 ################################################################################
 # Entry room and entry room explore options ####################################
@@ -599,11 +549,6 @@ while True:
     if pass_3:
         pass_4 = dung_room_3()
     if pass_4:
-        pass_5 = dung_room_4()
-   
-
-
-    #Writing needs to be sped up, for the amount of wording we have, the text crawl needs to be turned into a text walk. Add more time for people to read until going to the next chapter.
-    #Maybe using an input system for (Press enter to continue) or something of the like.
-    #The Life check counter needs to be around for a little bit longer so people can actually make note of their life count.
-    
+        pass_5 = dung_explore_4()
+    if pass_5:
+        input("Test input")
