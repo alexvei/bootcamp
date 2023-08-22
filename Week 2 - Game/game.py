@@ -22,21 +22,75 @@ def contin():
     
 
 def dung_explore_1():
-    while True:
-        choice = input("Explore y/n: ")
-        if choice == 'y':
-            explore_message = ("\tAs you pay respect to those who have fallen before you, they return the generosity in kind.\n"
-            "\tAllowing another notch with your vessel to fill, granting you a burst of vigor.\n"
-            "\tYou venture deeper, knowing that those of the past are cheering you on from the afterlife.\n\n")
-            slow_writting(explore_message)
-            print("\tYou've gained 1 life!", f"Total: {life}.")
-            contin()
-            life_system(1)
-            return True
-        elif choice == 'n':
-            return True
-        else:
-            print("y/n only.")
+    explore_message = ("As the far side tomb door raises up, you are left with a room with the Akari and the tombstones and coffins dotted about this place.\n"
+    "You wonder what the usage for those were, who the people are inside the coffins and what they did for their master...\n"
+    "The room is rather dark and murky, dirt and muck being on some of the coffins as dust covers the entire floor, most of the tombstones are smudged beyond belief apart from a few.\n"
+    "The Akari goes back to cleaning and maintaining the tombstones, seemingly dysfunctional for a while till you came and opened the place up again.\n"
+    'The Akari speaks. "Pay respects to the dead while you are here... perhaps it will gain you favor among our gods and Akarak.".\n\n')
+    slow_writting(explore_message)
+
+    print("You can:")
+    print("\t1. Venture on.")
+    print("\t\t2. Speak to the Akari.")
+    print("\t\t\t3. Honor the dead.")
+    print("\t\t\t\t4. Open a coffin.")
+
+    while(True):
+        try:
+            b_choice = int(input("Choose one of the 4: "))
+            if 1 <= b_choice <= 4:
+                break
+            else:
+                print("A number from 1-4")
+        except ValueError:
+            print("A number please. (1-4)")
+    if b_choice == 1:
+        message = ("You ignore the request of the Akari, venturing down into the darker depths.\n"
+                   "The Akari looks at the door you head towards. Sighing.\n"
+                   '"Perhaps another one will remember you all..."\n'
+                   "As it goes back to maintain the grim serenity within the walls...\n")
+        
+        slow_writting(message)
+        contin()
+        return 1
+    
+    if b_choice == 2:
+        message = ("You walk up to the Akari, seemingly feeling saddened or empty as it continues its duties with the littlest effort possible.\n"
+                   "It looks up to you, speaking in a gravelly and monotone voice.\n"
+                   '"What do you wish mortal… our home is not for one with so much life within." You ask about it.\n'
+                   "It pauses for a moment, entertaining the thought. Before looking up to you.\n"
+                   '"You wish to learn about the grave digger? I find that amusing… but I will humor you. My name before my vessel was Utia, I wandered these halls in silence, I dared not speak."\n'
+                   'You ask why. "The dead can hear you, I wish to honor their conversations so I do not interrupt..."\n' 
+                   'You blink, clearly shocked at how casually it said this. "I assure you, they mean no harm... only are curious, like most humans before…"\n'
+                   'It looks down, returning to its duties. “Walk away mortal. Before they claim you as well.\n"'
+                   "You nod quickly, before hurrying down the staircase. Not before noting the smile on Utia's face.\n\n")
+        
+        slow_writting(message)
+        contin()
+        return 1
+    
+    if b_choice == 3:
+        message = ("You look towards one of the coffins, saying a prayer for them to wish them a blissful rest.\n"
+                   "The Akari sees this, shocked and happy. It walks up to you, extending its marble palm as you see an Orb of life.\n"
+                    "\"It is rare to see one so respectful of the past... you deserve to be rewarded. I hope this proves a lesson to you just as much as it did for me.\"\n"
+                    "You take the orb of life and place it into your vessel, it thrums with energies as you embrace it.\n"
+                    "The dead stand with you, as allies. Willing to retrieve you from whatever afterlife you find yourself in.\n"
+                    "You head towards the doorway, nodding in thanks towards the Akari before heading down. It waves as you do.\n\n")
+        
+        slow_writting(message)
+        contin()
+        return 1
+    if b_choice == 4:
+        message = ("Your curiosity gets the better of you, as you see a coffin slightly open in the back that appears to have a glint of something.\n"
+                   "As you walk towards it, the Akari warns you. \"Do you so wish to throw away your life so willingly? Perhaps it is best for you to turn back.\""
+                    "You look at it disapprovingly, as you move the coffin. The denizen grabs you as it lurches out of the coffin.\n"
+                    "Dragging you in and closing it behind you. The Akari merely sighs. As it looks to your now floating spirit.\n"
+                    '"A shame... Perhaps it\'s best for your to remain here... till we can forge you a vessel for yourself..."\n\n')
+        
+        cls()
+        slow_writting(message)
+        contin()
+        return 0
 
 
 def dung_explore_2(): # Placeholder
@@ -90,7 +144,7 @@ def dung_room_1():
 
 
 def dung_room_2(): # Placeholder
-    pass
+    input("Test")
 
 
 def entry_room():
@@ -146,6 +200,8 @@ def entry_room_explore():
             b_choice = int(input("Choose one of the 3: "))
             if 1 <= b_choice <= 3:
                 break
+            else:
+                print("A number from 1-3")
         except ValueError:
             print("A number please. (1-3)")
     
@@ -161,7 +217,8 @@ def entry_room_explore():
                    'Simply put, These were batteries for us Akari used to replenish our stocks.\n'
                    'I have been stockpiling a few so you may take that one and place it into the vessel I gave you."\n'
                    "You do as it says, and the thrum of life that erupts from it feels almost invigorating. With your new sense of strength, you instinctively head into the tomb.\n"
-                   "Ready for anything.(Gain +1 Life!)\n")
+                   "Ready for anything.(Gain +1 Life!)\n"
+                   f"Total: {life+1} lives.\n")
         cls()
         slow_writting(message)
         life_system(1)
@@ -236,19 +293,21 @@ def welcome_message():
     global name
     slow_writting("Hello! A text-based adventure game.")
     time.sleep(0.2)
-    name = input("\nEnter your name and let's get started: ")
+    while name == '':
+        name = input("\nEnter your name and let's get started: ")
     cls()
 
 
 cls()
 welcome_message()
+
 while True:
     cls()
     globals()
     story_intro()
 
     while True:
-        chc = input("Do you still want to continue? (y/n)")
+        chc = input("Do you still want to continue?(y/n) ")
         if chc.lower() == 'y':
             input(f"Great. Remember, you only have {life} lives. Be careful. \nPress enter to continue...")
             break
@@ -259,7 +318,13 @@ while True:
             print("Type y for yes, n for no.")
     
     cls()
+
     pass_1 = entry_room()
+    pass_2 = False
+    pass_3 = False
+    pass_4 = False
+    pass_5 = False
+
     if pass_1:
         pass_2 = dung_room_1()
     if pass_2:
