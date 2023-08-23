@@ -4,27 +4,28 @@ import sys      # built-in python module for more system stuff
 import time     # built-in python module for time
 
 
-# Global Variables #############################################################
+################################################################################
+# Global Variables 
 father = 'glaen'
 name = ''
 nor = 'nor'
 life = 3
+
+
 ################################################################################
-
-
-# Functions ####################################################################
-# Clear the screen
+# Systems/ functions
+# Clear screen(cls), Contin(press enter to continue), 
+# Explore question (continuation_choice), Exploration options, Globals, Life 
+# System, Lose(lost), Text animation effect functions(slow_writting)
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
 
 
-# Press enter to continue
 def contin():
     input("Press enter to continue...")
     cls()
 
 
-# Continuation function
 def continuation_choice():
     slow_writting("Do you wish to explore more?(y/n) \n")
     user_choice = input("Choice: ")
@@ -36,46 +37,136 @@ def continuation_choice():
         return False 
 
 
+def exploration_options(options_dict):
+    print("You can:")
+    for i in options_dict:
+        print(f"\t"*i,f"{i}.{options_dict[i]}")
+
+    while(True):
+        try:
+            if len(options_dict) != 1:
+                b_choice = int(input("Choose one of the options: "))
+            else:
+                b_choice = int(input("Only one option left: "))
+            if b_choice in options_dict:
+                return b_choice
+            else:
+                print(f"A valid number.")
+        except ValueError:
+            print(f"A number please.")
+
+
+def globals():
+    global father, life, name, nor
+    father = 'Glaen'
+    life = 3
+    nor = 'nor'
+
+
+def life_system(action, question):
+    global life
+    if action:
+        life += 1
+    else:
+        life -= 1
+        if question:
+            print("Wrong!")
+
+
+def lost():
+    contin()
+    print("You are out of lives!")
+    print("GAME OVER!")
+    contin()
+
+
+def slow_writting(word):
+    for c in word:
+        sys.stdout.write(c)
+        sys.stdout.flush()
+        time.sleep(0) ## 0 for debugging
+
+
 ################################################################################
-# Dungeon explore options
+# Dungeon Exploration
+def entry_room_explore(): # This is exploration after puzzle 1
+    choices_dict = {1: "Venture into the tomb",
+                    2: "Look at the Pillars,",
+                    3: "Try to talk to the Akari."}
+    
+    while True:
+        explore_message = ("\tThe Akari stands back and lets you gather your surroundings.\n"
+        "You stand at the base of the tomb, it stands tall as it's in the base of a large mountain, the tomb's door is circular as it rolls sideways to allow you to enter the tomb.\n"
+        "Two pillars stand broken at the entryway, the rubble spreading across the stone path.\n"
+        "The Akari stands leaning against the wall.\n"
+        "Its figure is so tall that you have to lean your neck upwards to see its head. It looks like a stone lion as it merely watches you, it doesn't appear like it wants to talk.\n\n")
+        slow_writting(explore_message)
+
+        player_choice = exploration_options(choices_dict)
+        cls()
+        result = entry_room_explore_1_choices(player_choice)
+        choices_dict.pop(player_choice)
+        if player_choice == 1:
+            break
+        if not continuation_choice():
+            break 
+    return result
+
+
+def entry_room_explore_1_choices(chc):
+    chc = int(chc)
+    if chc == 1:
+        slow_writting("Venture into the tomb...\n")
+        contin()
+        return True
+    if chc == 2:
+        message = ("You decide to look at the pillars, it seems to be made out of a rich white stone. Marble you would think but you cannot be sure, as you look at each pillar, One crosses your eye as something gleams from its base.\n"
+                   "You pick it up and look at the object. It seems to be a small red clay ball with some carvings and marks dotted all over it. The Akari speaks up.\n"
+                   '"Ah, you found it, A life orb. These can save you from worse situations should they befall you.\n'
+                   'You might be wondering why these items exist in the world for adventurers such as yourself to find.\n'
+                   'Simply put, These were batteries for us Akari used to replenish our stocks.\n'
+                   'I have been stockpiling a few so you may take that one and place it into the vessel I gave you."\n'
+                   "You do as it says, and the thrum of life that erupts from it feels almost invigorating. With your new sense of strength, you instinctively head into the tomb.\n"
+                   "Ready for anything.(Gain +1 Life!)\n"
+                   f"Total: {life+1} lives.\n")
+        cls()
+        slow_writting(message)
+        life_system(1, 0)
+        return True,
+
+    if chc == 3:
+        print("Your curiosity gets the better of you, as you approach the Akari, it looks down, trying to face you.\n"
+        '"I am confused, mortal."\n'
+        'It speaks.\n'
+        '"Do you not wish to venture deeper into the tomb… To find what you are looking for?"\n'
+        'You nod but are curious about the being.\n'
+        '"Well, I used to be known as Luke. After the events of my master\'s demise, I stayed with him during his final moments, as he transferred my soul into the vessel you see before you.\n'
+        'Making me an eternal guardian and protector of his home." He squats. "I am honored to have this role." He says, before standing up again.\n'
+        '"Go, claim your treasure, before I change my mind."\n'
+        'You nod, and head in. Enlightened by this experience.\n')
+        return True
+
+
 def dung_explore_1(): # This is exploration after puzzle 2
     choices_dict = {1: "Venture on.",
                     2: "Speak to the Akari.",
                     3: "Honor the dead.",
                     4: "Open a coffin."}
-    #needs to loop for exploration purposes. Loop only twice and make sure to append the previous option so players don't gain infinite resources, remove the venture deeper option? 
-    
+
     while True:
         cls()
-        explore_message = ("As the far side tomb door raises up, you are left with a room with the Akari and the tombstones and coffins dotted about this place.\n"
+        message = ("As the far side tomb door raises up, you are left with a room with the Akari and the tombstones and coffins dotted about this place.\n"
         "You wonder what the usage for those were, who the people are inside the coffins and what they did for their master...\n"
         "The room is rather dark and murky, dirt and muck being on some of the coffins as dust covers the entire floor, most of the tombstones are smudged beyond belief apart from a few.\n"
         "The Akari goes back to cleaning and maintaining the tombstones, seemingly dysfunctional for a while till you came and opened the place up again.\n"
         'The Akari speaks. "Pay respects to the dead while you are here... perhaps it will gain you favor among our gods and Akarak.".\n\n')
-        slow_writting(explore_message)
+        slow_writting(message)
 
-        print("You can:")
-        for i in choices_dict:
-            print(f"\t"*i,f"{i}.{choices_dict[i]}")
-
-        while(True):
-            try:
-                if len(choices_dict) != 1:
-                    b_choice = int(input("Choose one of the options: "))
-                else:
-                    b_choice = int(input("Only one option left: "))
-                if b_choice in choices_dict:
-                    break
-                else:
-                    print(f"A valid number.")
-            except ValueError:
-                print(f"A number please.")
-
-        
+        player_choice = exploration_options(choices_dict)
         cls()
-        result = dung_explore_1_choices(b_choice)
-        choices_dict.pop(b_choice)
-        if b_choice == 1 or b_choice == 4:
+        result = dung_explore_1_choices(player_choice)
+        choices_dict.pop(player_choice)
+        if player_choice == 1:
             break
         if not continuation_choice():
             break 
@@ -136,35 +227,18 @@ def dung_explore_2(): # This is exploration after puzzle 3
     
     while True:
         cls()
-        explore_message = ("As the trial is complete in this room, you look around the entire room. Trying to glean what you can.\n"
+        message = ("As the trial is complete in this room, you look around the entire room. Trying to glean what you can.\n"
         "The floor is in absolute chaos as books and tomes litter the floor, multiple pages ripped out lie next to them, all from differing volumes.\n"
         "The bookshelves seem precariously balanced off each other, if it were to move even just a tiny bit, they could collapse and cause serious damage to this entire room. \n"
         "After you move some of the books and pages, you see necromantic sigils that seem innate.\n"
         "What do you do?\n")
-        slow_writting(explore_message)
-        
-        print("You can:")
-        for i in choices_dict:
-            print(f"\t"*i,f"{i}.{choices_dict[i]}")
+        slow_writting(message)
 
-        while(True):
-            try:
-                if len(choices_dict) != 1:
-                    b_choice = int(input("Choose one of the options: "))
-                else:
-                    b_choice = int(input("Only one option left: "))
-                if b_choice in choices_dict:
-                    break
-                else:
-                    print(f"A valid number.")
-            except ValueError:
-                print(f"A number please.")
-
-        
+        player_choice = exploration_options(choices_dict)
         cls()
-        result = dung_explore_2_choices(b_choice)
-        choices_dict.pop(b_choice)
-        if b_choice == 2:
+        result = dung_explore_2_choices(player_choice)
+        choices_dict.pop(player_choice)
+        if player_choice == 2:
             break
         if not continuation_choice():
             break 
@@ -391,35 +465,33 @@ def dung_explore_3_choice_5():
 
 
 def dung_explore_4(): # This is exploration before puzzle 5
-    global life
-    explore_message = ("Finally, you arrive at the depths of Akarak's tomb.\n"
-    "A wide open room with a large entry way on both the left and right of the room stands tall.\n"
-    "You notice a large stone coffin in the middle of the room.\n" 
-    "You steel yourself, approaching the coffin and reading it.\n"
-    "\"Akarak, The abandoned lich\" it read.\n" 
-    "Your eyes scan the room around you again, from the middle,\n"
-    "you see a stone tablet on the opposite side of the entryway with empty holes.\n\n")
-    slow_writting(explore_message)
-
-    print("You can:")
-    print("\t1. Look into the large archway on the right.")
-    print("\t\t2. Approach the tablet.")
-    print("\t\t\t3. Loot the place")
-
-    while(True):
-        try:
-            b_choice = int(input("Choose one of the 3: "))
-            if 1 <= b_choice <= 3:
-                break
-            else:
-                print("A number from 1-3")
-        except ValueError:
-            print("A number please. (1-3)")
-
-    return dung_explore_4_4(b_choice)
+    choices_dict = {1: "Look into the large archway on the right.",
+                    2: "Venture deeper.",
+                    3: "Loot the place."}
+    
+    while True:
+        cls()
+        message = ("Finally, you arrive at the depths of Akarak's tomb.\n"
+                "A wide open room with a large entry way on both the left and right of the room stands tall.\n"
+                "You notice a large stone coffin in the middle of the room.\n" 
+                "You steel yourself, approaching the coffin and reading it.\n"
+                "\"Akarak, The abandoned lich\" it read.\n" 
+                "Your eyes scan the room around you again, from the middle,\n"
+                "you see a stone tablet on the opposite side of the entryway with empty holes.\n\n")
+        
+        slow_writting(message)
+        player_choice = exploration_options(choices_dict)
+        cls()
+        result = dung_explore_4_choices(player_choice)
+        choices_dict.pop(player_choice)
+        if player_choice == 2:
+            break
+        if not continuation_choice():
+            break 
+    return result
 
 
-def dung_explore_4_4(chc):
+def dung_explore_4_choices(chc):
     global life
     if chc == 1:
         message = ("You look through the large archway, seemingly not seeing much beyond darkness.\n" 
@@ -460,6 +532,43 @@ def dung_explore_4_4(chc):
 
 ################################################################################
 # Dungeon puzzles
+def entry_room(): # Puzzle 1
+    choices = ["A", "B", "C"]
+    global life
+
+    message = (f"\tThe Tomb of Akarak, A place laced within mystery and myth.\n" 
+    "Some say the place holds the eternal hatred Akarak had for the living, as he practiced his necromancy within a secure chamber of the tomb.\n" 
+    "Some say that this was his personal quarters, set up so he could hide away from the world.\n" 
+    "Yet all knew the evil energies that lingered within this place, and treasures that had been stored away.\n" 
+    "Countless magical items and gold beyond your belief await deep within his treasury.\n" 
+    "As you approach, you notice this rather large living statue tower before you.\n" 
+    "It's voice booms' \"I am one of Akarak's few living guardians. Made of stone and souls that I am, an Araki your people know me as.\n" 
+    "Yet to you, I pose a question. Akarak is... curious to see another so soon...\n" 
+    "I see your pain adventurer, you venture into this tomb to save another,\n"
+    "yet you rush recklessly into danger without knowing the full truth.\n" 
+    "Tell me then, What do you seek?\"\n")
+    cls()
+    slow_writting(message)
+
+    while True:
+        player_choice = input('Answers: A:"Cure" B: "Power" C: "Riches"\t\t Lives left= {}\nAnswer: '.format(life))
+        if player_choice.upper() in choices:
+            if player_choice.upper() == 'A':
+                success_message = ("\tA noble task indeed, Your heart and mind are perhaps strong enough to face my master's resting place.\n" 
+                "\tTake this vessel to serve as a way to return from the plain of death and venture on, valiant soul.\n")
+                slow_writting(success_message)
+                contin()
+                return entry_room_explore()
+            else:
+                life_system(0, 1)
+                if life == 0:
+                    print("Your heart is not pure, you will not survive. Leave this place and suffer the curse of Akarak!")
+                    contin()
+                    return False
+        else:
+            print("Type only A, B or C.")
+
+
 def dung_room_1(): # Puzzle 2
     cls()
     message = ("As you enter the tomb...\n"
@@ -544,9 +653,7 @@ def dung_room_2(): # Puzzle 3
                             "The sigils of the room light up as necrotic energy primates through the air.\n"
                             "You feel yourself slowly wither, as you watch as the spirit of Akarak guides you to the next life.\n")
                 slow_writting(fail_message)
-                contin()
                 lost()
-                contin()
                 return False   
 
 
@@ -666,11 +773,10 @@ def boulder_chase_pitfall(): #Boulder chase/Epilogue
             if player_choice.upper() == "B":
                 life_system(0, 1)
                 if life > 0:
-                    continue
+                 continue
             if player_choice.upper() == "B":
-                cls()
-                life_system(0, 1)
                 if life == 0:
+                    lost()
                     print("\tTime is against you, you don't have time to cross a rickety beam.\n" 
                           "\tYou run back, and try to make a jump for it. \n"
                           "\tAs you fly through the air, the boulder picks up the momentum and starts to roll behind you, that throws off your landing as the loud crashing causes you to recoil from the sound.\n"
@@ -808,159 +914,13 @@ def epilogue():
                 "\t The END\n")
     slow_writting(epilogue)
     contin()
-    
+
 
 def finale():
     (escape(), epilogue())
 
-################################################################################
-# Entry room and entry room explore options ####################################
-################################################################################
-def entry_room(): # Puzzle 1
-    choices = ["A", "B", "C"]
-    global life
-
-    message = (f"\tThe Tomb of Akarak, A place laced within mystery and myth.\n" 
-    "Some say the place holds the eternal hatred Akarak had for the living, as he practiced his necromancy within a secure chamber of the tomb.\n" 
-    "Some say that this was his personal quarters, set up so he could hide away from the world.\n" 
-    "Yet all knew the evil energies that lingered within this place, and treasures that had been stored away.\n" 
-    "Countless magical items and gold beyond your belief await deep within his treasury.\n" 
-    "As you approach, you notice this rather large living statue tower before you.\n" 
-    "It's voice booms' \"I am one of Akarak's few living guardians. Made of stone and souls that I am, an Araki your people know me as.\n" 
-    "Yet to you, I pose a question. Akarak is... curious to see another so soon...\n" 
-    "I see your pain adventurer, you venture into this tomb to save another,\n"
-    "yet you rush recklessly into danger without knowing the full truth.\n" 
-    "Tell me then, What do you seek?\"\n")
-    cls()
-    slow_writting(message)
-
-    while True:
-        player_choice = input('Answers: A:"Cure" B: "Power" C: "Riches"\t\t Lives left= {}\nAnswer: '.format(life))
-        if player_choice.upper() in choices:
-            if player_choice.upper() == 'A':
-                success_message = ("\tA noble task indeed, Your heart and mind are perhaps strong enough to face my master's resting place.\n" 
-                "\tTake this vessel to serve as a way to return from the plain of death and venture on, valiant soul.\n")
-                slow_writting(success_message)
-                contin()
-                return entry_room_explore()
-            else:
-                life_system(0, 1)
-                if life == 0:
-                    print("Your heart is not pure, you will not survive. Leave this place and suffer the curse of Akarak!")
-                    contin()
-                    return False
-        else:
-            print("Type only A, B or C.")
-        
-
-def entry_room_explore(): # This is exploration for puzzle 1
-    choices_dict = {1: "Venture into the tomb",
-                    2: "Look at the Pillars,",
-                    3: "Try to talk to the Akari."}
-    
-    while True:
-        explore_message = ("\tThe Akari stands back and lets you gather your surroundings.\n"
-        "You stand at the base of the tomb, it stands tall as it's in the base of a large mountain, the tomb's door is circular as it rolls sideways to allow you to enter the tomb.\n"
-        "Two pillars stand broken at the entryway, the rubble spreading across the stone path.\n"
-        "The Akari stands leaning against the wall.\n"
-        "Its figure is so tall that you have to lean your neck upwards to see its head. It looks like a stone lion as it merely watches you, it doesn't appear like it wants to talk.\n\n")
-        slow_writting(explore_message)
-
-        print("You can:")
-        for i in choices_dict:
-            print(f"\t"*i,f"{i}.{choices_dict[i]}")
-
-        while(True):
-            try:
-                if len(choices_dict) != 1:
-                    b_choice = int(input("Choose one of the options: "))
-                else:
-                    b_choice = int(input("Only one option left: "))
-                if b_choice in choices_dict:
-                    break
-                else:
-                    print(f"A valid number.")
-            except ValueError:
-                print(f"A number please.")
-                #needs to loop for exploration purposes. Loop only twice and make sure to append the previous option so players don't gain infinite resources, remove the venture deeper option? 
-
-        
-        cls()
-        result = entry_room_explore_1_1(b_choice)
-        choices_dict.pop(b_choice)
-        if b_choice == 1:
-            break
-        if not continuation_choice():
-            break 
-    return result
-
-
-def entry_room_explore_1_1(chc):
-    chc = int(chc)
-    if chc == 1:
-        slow_writting("Venture into the tomb...\n")
-        contin()
-        return True
-    if chc == 2:
-        message = ("You decide to look at the pillars, it seems to be made out of a rich white stone. Marble you would think but you cannot be sure, as you look at each pillar, One crosses your eye as something gleams from its base.\n"
-                   "You pick it up and look at the object. It seems to be a small red clay ball with some carvings and marks dotted all over it. The Akari speaks up.\n"
-                   '"Ah, you found it, A life orb. These can save you from worse situations should they befall you.\n'
-                   'You might be wondering why these items exist in the world for adventurers such as yourself to find.\n'
-                   'Simply put, These were batteries for us Akari used to replenish our stocks.\n'
-                   'I have been stockpiling a few so you may take that one and place it into the vessel I gave you."\n'
-                   "You do as it says, and the thrum of life that erupts from it feels almost invigorating. With your new sense of strength, you instinctively head into the tomb.\n"
-                   "Ready for anything.(Gain +1 Life!)\n"
-                   f"Total: {life+1} lives.\n")
-        cls()
-        slow_writting(message)
-        life_system(1, 0)
-        return True,
-
-    if chc == 3:
-        print("Your curiosity gets the better of you, as you approach the Akari, it looks down, trying to face you.\n"
-        '"I am confused, mortal."\n'
-        'It speaks.\n'
-        '"Do you not wish to venture deeper into the tomb… To find what you are looking for?"\n'
-        'You nod but are curious about the being.\n'
-        '"Well, I used to be known as Jerico. After the events of my master\'s demise, I stayed with him during his final moments, as he transferred my soul into the vessel you see before you.\n'
-        'Making me an eternal guardian and protector of his home." He squats. "I am honored to have this role." He says, before standing up again.\n'
-        '"Go, claim your treasure, before I change my mind."\n'
-        'You nod, and head in. Enlightened by this experience.\n')
-        return True
 
 ################################################################################
-# Setting/resetting global variables ###########################################
-def globals():
-    global father, life, name, nor
-    father = 'Glaen'
-    life = 3
-    nor = 'nor'
-
-
-# Life points give/take
-def life_system(action, question):
-    global life
-    if action:
-        life += 1
-    else:
-        life -= 1
-        if question:
-            print("Wrong!")
-
-
-# Placeholder
-def lost():
-    print("You are out of lives!")
-
-
-# Text animation effect
-def slow_writting(word):
-    for c in word:
-        sys.stdout.write(c)
-        sys.stdout.flush()
-        time.sleep(0) ## 0 for debugging
-        
-
 def story_intro():
     message = (f"Within the ruins of Akarak, lies an ancient and forgotten curse...\n"
     f"Foolishly, your father {father.capitalize()} sought out these riches within the Tomb of Akarak, a place\n"
@@ -1031,5 +991,4 @@ def welcome_message():
 #     if passer:
 #         passer = finale()
 
-
-dung_room_3()
+dung_room_2()
