@@ -58,25 +58,25 @@ def game():
     explore_entry_room_choices_dict = {1: "Venture into the tomb",
                                     2: "Look at the Pillars,",
                                     3: "Try to talk to the Akari."}
+    
+    explore_dung_room_choices = [{1: "Venture on.",
+                                2: "Speak to the Akari.",
+                                3: "Honor the dead.",
+                                4: "Open a coffin."},
 
-    explore_dung_room_one_choices_dict= {1: "Venture on.",
-                                        2: "Speak to the Akari.",
-                                        3: "Honor the dead.",
-                                        4: "Open a coffin."}
+                                {1: "Venture deeper.",
+                                2: "Look at the books on the table.",
+                                3: "Examine the sigils."},
 
-    explore_dung_room_two_choices_dict = {1: "Venture deeper.",
-                                            2: "Look at the books on the table.",
-                                            3: "Examine the sigils."}
+                                {1:"Continue deeper.",
+                                2: "Speak to Akari.",
+                                3: "Look for the key in the wardrobe.",
+                                4: "Look for the key in the bed.",
+                                5: "Pet the Akari."},
 
-    explore_dung_room_three_choices_dict = {1:"Continue deeper.",
-                                            2: "Speak to Akari.",
-                                            3: "Look for the key in the wardrobe.",
-                                            4: "Look for the key in the bed.",
-                                            5: "Pet the Akari."}
-
-    explore_dung_room_four_choices_dict = {1: "Approach the tablet.",
-                                        2: "Look into the large archway on the right.",
-                                        3: "Loot the place."}
+                                {1: "Approach the tablet.",
+                                2: "Look into the large archway on the right.",
+                                3: "Loot the place."}]
 
     welcome_message()
     story_intro()
@@ -87,40 +87,26 @@ def game():
     else:
         game()
     
-    if puzzles(dungeon_room_one_message, solution_puzzle_two, success_message_puzzle_two, fail_message_puzzle_two):
-        if not rooms(explore_dung_room_one_message, explore_dung_room_one_choices_dict, 1):
+    for index in range(0,4):
+        if index == 3:
+            if rooms(explore_dungeon_message[index], explore_dung_room_choices[index], index+1):
+                puzzles(dungeon_room_messages[index], solutions[index], success_message_puzzle[index], fail_message_puzzle[index])
+                break
+
+        if puzzles(dungeon_room_messages[index], solutions[index], success_message_puzzle[index], fail_message_puzzle[index]):
+            if not rooms(explore_dungeon_message[index], explore_dung_room_choices[index], index+1):
+                game()
+        else:
             game()
-    else:
-        game()
-
-    if puzzles(dungeon_room_two_message, solution_puzzle_three, success_message_puzzle_three,fail_message_puzzle_three):
-        rooms(explore_dung_room_two_message, explore_dung_room_two_choices_dict, 2)
-    else:
-        game()
-
-    if puzzles(dungeon_room_three_message, solution_puzzle_four, success_message_puzzle_four,fail_message_puzzle_four):
-        rooms(explore_dung_room_three_message, explore_dung_room_three_choices_dict, 3)
-    else:
-        game()
-    
-    if rooms(explore_dung_room_four_message, explore_dung_room_four_choices_dict, 4):
-        if not puzzles(dungeon_room_four_message, solution_puzzle_five, success_message_puzzle_five,fail_message_puzzle_five):
+        
+    for i in range(0, 3):
+        if boulder(boulder_message[i], boulder_dictions[i], boulder_success_message[i], boulder_failure_message[i]):
+            pass
+        else:
             game()
-    else:
-        game()
 
-    if boulder(boulder_pitfall_message, boulder_pitfall_dict, boulder_pitfall_success, boulder_pitfall_failure):
-        if not boulder(boulder_hallway_message, boulder_hallway_dict, boulder_hallway_success, boulder_hallway_failure):
-            game()
-    else:
-        game()
+    epilogue_story()
     
-    if boulder(boulder_exit_message, boulder_exit_dict, boulder_hallway_success, boulder_hallway_failure):
-        epilogue_story()
-    else:
-        game()
-    
-
 
 def life_system(action, question):
     global life
@@ -157,7 +143,7 @@ def slow_writting(word):
 
 ################################################################################
 # Dungeon Exploration
-def rooms(message, dict, puzzle): # This is exploration after puzzle 1
+def rooms(message, dict, puzzle): 
     while True:
         slow_writting(message)
         player_choice = exploration_options(dict)
@@ -488,7 +474,7 @@ def boulder(message, dict, success_message, fail_message):
         
         elif len(dict) >= 3:
             if player_answer.upper() == "C":
-                slow_writting(boulder_exit_failure_alternative)
+                slow_writting(boulder_failure_message[-1])
                 lost()
                 contin()
                 return False
@@ -558,28 +544,29 @@ def puzzles(message, answer, success_message, fail_message):
             elif life == 0:
                 cls()
                 slow_writting(fail_message)
-                lost()
+                contin()
                 return False
 
 
 # Ending Story
 def epilogue_story():
-    escape_message = ("\t As you stand up onto the flatland, you find your way back up the mountain, a staircase and a little bit of climbing allows you to reach the entryway of the tomb. The Akari looks to you.\n"
-                      "\t “...Consider me shocked to see you succeed, you are worthy of Akarak's treasure.” You nod, looking at the staff on your back.\n"
-                      "\t “The curse of Withering is dispelled by absorbing the necrotic energies back into the staff, by that point your father's body should be able to heal.\n”"
-                      "\t You looked shocked, how did it know? You shrug as you realize these beasts are magical in nature and thank it for its aid.\n"
-                      "\t The Akari nods and gestures to you to leave. You take that as a cue to leave as you run back towards your village, running into your father's house and attempting to cleanse him.\n")
+    escape_message = ("\tAs you stand up onto the flatland, you find your way back up the mountain, a staircase and a little bit of climbing allows you to reach the entryway of the tomb. The Akari looks to you.\n"
+        "\t\"...Consider me shocked to see you succeed, you are worthy of Akarak's treasure.” You nod, looking at the staff on your back.\n"
+        "\t\"The curse of Withering is dispelled by absorbing the necrotic energies back into the staff, by that point your father's body should be able to heal.\n\""
+        "\tYou looked shocked, how did it know? You shrug as you realize these beasts are magical in nature and thank it for its aid.\n"
+        "\tThe Akari nods and gestures to you to leave. You take that as a cue to leave as you run back towards your village, running into your father's house and attempting to cleanse him.\n")
     slow_writting(escape_message)
     contin()
 
-    epilogue = ("\t As you enter the home, you feel the pained wails of your father as you remember. It was never nice to deal with but you venture upstairs to where he lay.\n"
-                "\t With the knowledge you gained from Akarak's tomb and from the chase at the end, you siphon the energies of the curse on your father into Akarak's focus.\n"
-                "\t Him finally resting peacefully, breathing slowly. As the pain seems to lighten from Glaen's body. You fall backwards, falling into a sitting position.\n"
-                "\t Success... finally you think to yourself. I should keep this just in case someone else falls for the same issue… \n"
-                "\t You head back to your home after standing up, placing Akarak’s focus into a display case as you clamber into bed. Resting after the exciting end of your adventure…\n"
-                "\t The END\n")
+    epilogue = ("\tAs you enter the home, you feel the pained wails of your father as you remember. It was never nice to deal with but you venture upstairs to where he lay.\n"
+        "\tWith the knowledge you gained from Akarak's tomb and from the chase at the end, you siphon the energies of the curse on your father into Akarak's focus.\n"
+        "\tHim finally resting peacefully, breathing slowly. As the pain seems to lighten from Glaen's body. You fall backwards, falling into a sitting position.\n"
+        "\tSuccess... finally you think to yourself. I should keep this just in case someone else falls for the same issue... \n"
+        "\tYou head back to your home after standing up, placing Akarak\'s focus into a display case as you clamber into bed. Resting after the exciting end of your adventure...\n\n")
     slow_writting(epilogue)
     contin()
+    slow_writting("\t\tTHE END!\n\n\n\n\n")
+    input("")
 
 
 # Introduction story
@@ -617,13 +604,13 @@ def welcome_message():
 
 
 # Answers
-solution_puzzle_two = 'death'
-solution_puzzle_three = 'nor'
-solution_puzzle_four = 'souls'
-solution_puzzle_five = 'wake'
+solutions = [ 'death',
+            'nor',
+            'souls',
+            'wake']
 
 # Messages
-dungeon_room_one_message = ("As you enter the tomb...\n"
+dungeon_room_messages = [("As you enter the tomb...\n"
     "You are faced with a crypt, Coffins lie the walls and floors of this place, \n"
     "nearly with names smudged out from sight and recognition, you can see some of the coffins located around. \n"
     "After examination, you can see a few key names. They are wilfred daWldaddle, Ariana bleedhollow, riKi cruilla and yawn fEster.\n" 
@@ -640,18 +627,16 @@ dungeon_room_one_message = ("As you enter the tomb...\n"
     "\tI will come when your old and grey, or maybe even the very next day.\n"
     "\tI will come with cold embrace, and give you rest with a chill kiss on your face.\n"
     "\tI come in many forms whether it's irony, love, laughter, or hate.\n"
-    "\tI am everyone's finale fate.\n")
-
-dungeon_room_two_message = ("As you hop off the last step, you are left with what appears to be a rundown Ritual room.\n"
+    "\tI am everyone's finale fate.\n"),
+     ("As you hop off the last step, you are left with what appears to be a rundown Ritual room.\n"
     "Books and tomes scatter the floor as bookcases seem to have toppled upon themselves.\n"
     "You can climb through some of the passageways created by the toppled bookshelves and reach a pedestal.\n"
     "There sits a book, with a bookmarked page.\n"
     "You open the book to the page and see it written in fine ink.\n"
     '"To those that read this and are not of my troupe, I ask this of you, around this room are the remnants of my study. Where I practiced my forbidden magics and held my darkest secrets,\n'
     'for whatever reason you chose to venture into this sacred place, I ask this of you. Who is the disciple I sent off to the realm of the living,\n'
-    'to explore and learn more about life and death?"\n\n')
-
-dungeon_room_three_message = ("Venturing deeper into the tomb, you happen upon Akarak's chambers, Gathering dust and seemingly destroyed...\n"
+    'to explore and learn more about life and death?"\n\n'),
+    ("Venturing deeper into the tomb, you happen upon Akarak's chambers, Gathering dust and seemingly destroyed...\n"
     "\tYou examine more and more of the room and notice the indent in the wall opposite the door you came from.\n"
     "\tIt was then you heard a noise upon the destroyed and dusty bed.\n" 
     "\tAn Akari, a small one. About the size of a puppy, it looks up to you and speaks.\n"
@@ -659,51 +644,50 @@ dungeon_room_three_message = ("Venturing deeper into the tomb, you happen upon A
     "\tYou looked at it shocked, asking about why Akarak seems so... misunderstood...\n" 
     "\tThe Akari replied. \"Akarak was our master, he cared for us all, he cared little for affairs beyond that.He was defensive and isolated.\n"
     "\t Akarak fought so that all of us folks who didn't fit in belonged, do you understand?\"\n"
-    "\t\"We ask this of you then, what are we made of aside from stone...What powers us forward?\"\n")
-
-dungeon_room_four_message = ("As you approach the tablet, you see a riddle written on it.\n"
+    "\t\"We ask this of you then, what are we made of aside from stone...What powers us forward?\"\n"),
+    ("As you approach the tablet, you see a riddle written on it.\n"
     "\"Throughout your journey down in my depths, you have learnt more of my presence in the world. My motives and my treatment of others. Now I ask this of you, outsider.\n"
     "Fill in the word below the tablet, and it shall allow you into my focus.\"\n"
-    "Below you see every single letter of the alphabet placed down in a chest. Fitting perfectly towards the tablet. What will you spell?\n\n")
+    "Below you see every single letter of the alphabet placed down in a chest. Fitting perfectly towards the tablet. What will you spell?\n\n")]
 
 # Success Messages
-success_message_puzzle_two = ("\tYour memory is sharp, I implore you to venture on.\n"
+success_message_puzzle = [("\tYour memory is sharp, I implore you to venture on.\n"
     "\tBut you may pay respects to those who have fallen before you, they rest within these halls.\n"
-    "\tPerhaps they will give you the strength and courage to venture deeper into our master abode.\n")
+    "\tPerhaps they will give you the strength and courage to venture deeper into our master abode.\n"),
+    
+    ('"\tNor... yes... I do miss her... I trust she is finding your realm suitable...\n'
+    "\tI implore you to venture deeper, you seem wiser than the rest...\n"
+    "\tYet if you wish to learn more, read some of the books on this table...\"\n"),
 
-success_message_puzzle_three = ('"\tNor... yes... I do miss her... I trust she is finding your realm suitable...\n'
-            "\tI implore you to venture deeper, you seem wiser than the rest...\n"
-            "\tYet if you wish to learn more, read some of the books on this table...\"\n")
+    ("\"Yes... the souls of those who fell to the teachings.Akarak mourned for them. \n"
+    "Stored their souls away within these. Akari, venture on adventurer, you are close to the end...\"\n"),
 
-success_message_puzzle_four = ("\"Yes... the souls of those who fell to the teachings.Akarak mourned for them. \n"
-            "Stored their souls away within these. Akari, venture on adventurer, you are close to the end...\"\n")
-
-success_message_puzzle_five = ("The walls rumble as the wall behind the tablet raises. Showing a staff of malicious energies.\n" 
+    ("The walls rumble as the wall behind the tablet raises. Showing a staff of malicious energies.\n" 
     "Akarak's focus.\n" 
-    "You take it, and venture outwards, seemingly conquering the challenges.\n")
+    "You take it, and venture outwards, seemingly conquering the challenges.\n")]
 
 # Fail Messages
-fail_message_puzzle_two = ("You do not know? Perhaps I shall show you!\n"
+fail_message_puzzle = [("You do not know? Perhaps I shall show you!\n"
     "As it shouts, the coffins burst open and fleshless beings erupt from them.\n" 
     "You are surrounded, with no hope to escape as the door shuts behind you.\n"
     '\"You will share the fate of these people... as many others have before\"\n'
-    "As the skeletons shove you into a new coffin. And etch your name onto the front.\n\n")
+    "As the skeletons shove you into a new coffin. And etch your name onto the front.\n\n"),
 
-fail_message_puzzle_three = ("You have failed to answer the question correctly in three attempts.\n"
+    ("You have failed to answer the question correctly in three attempts.\n"
     "The book closes on you, the doors closing and leaving you trapped.\n"
     "The sigils of the room light up as necrotic energy primates through the air.\n"
-    "You feel yourself slowly wither, as you watch as the spirit of Akarak guides you to the next life.\n")
+    "You feel yourself slowly wither, as you watch as the spirit of Akarak guides you to the next life.\n"),
 
-fail_message_puzzle_four = ("The small Akari merely looks at you. \"Perhaps you should learn...\"\n"
-            "As you feel your soul ripped from your body, it floats around. And floats towards a human sized Akari,\n" 
-            "your soul is dragged in, as you now possess a stone body," 
-            "you can do no more, only remain vigil over this place... till another adventure challenges your master.\n")
+    ("The small Akari merely looks at you. \"Perhaps you should learn...\"\n"
+    "As you feel your soul ripped from your body, it floats around. And floats towards a human sized Akari,\n" 
+    "your soul is dragged in, as you now possess a stone body," 
+    "you can do no more, only remain vigil over this place... till another adventure challenges your master.\n"),
 
-fail_message_puzzle_five = ("You hear a large opening of the coffin behind you, this shriveled corpse steps out and looks at you.\n" 
+    ("You hear a large opening of the coffin behind you, this shriveled corpse steps out and looks at you.\n" 
     "It speaks slowly.\n"
     "\"You… have… learnt… NOTHING!\"\n" 
     "As the corpse lashes out, grabbing you with lightning speed and pulling you into its resting place.\n" 
-    "The top of the coffin sliding on top as you are trapped in Akarak's tomb.\n")
+    "The top of the coffin sliding on top as you are trapped in Akarak's tomb.\n")]
 
 # Explore messages
 explore_entry_room_message = ("\tThe Akari stands back and lets you gather your surroundings.\n"
@@ -712,111 +696,111 @@ explore_entry_room_message = ("\tThe Akari stands back and lets you gather your 
     "The Akari stands leaning against the wall.\n"
     "Its figure is so tall that you have to lean your neck upwards to see its head. It looks like a stone lion as it merely watches you, it doesn't appear like it wants to talk.\n\n")
 
-explore_dung_room_one_message = ("As the far side tomb door raises up, you are left with a room with the Akari and the tombstones and coffins dotted about this place.\n"
+explore_dungeon_message = [("As the far side tomb door raises up, you are left with a room with the Akari and the tombstones and coffins dotted about this place.\n"
     "You wonder what the usage for those were, who the people are inside the coffins and what they did for their master...\n"
     "The room is rather dark and murky, dirt and muck being on some of the coffins as dust covers the entire floor, most of the tombstones are smudged beyond belief apart from a few.\n"
     "The Akari goes back to cleaning and maintaining the tombstones, seemingly dysfunctional for a while till you came and opened the place up again.\n"
-    'The Akari speaks. "Pay respects to the dead while you are here... perhaps it will gain you favor among our gods and Akarak.".\n\n')
+    'The Akari speaks. "Pay respects to the dead while you are here... perhaps it will gain you favor among our gods and Akarak.".\n\n'),
 
-explore_dung_room_two_message = ("As the trial is complete in this room, you look around the entire room. Trying to glean what you can.\n"
+    ("As the trial is complete in this room, you look around the entire room. Trying to glean what you can.\n"
     "The floor is in absolute chaos as books and tomes litter the floor, multiple pages ripped out lie next to them, all from differing volumes.\n"
     "The bookshelves seem precariously balanced off each other, if it were to move even just a tiny bit, they could collapse and cause serious damage to this entire room. \n"
     "After you move some of the books and pages, you see necromantic sigils that seem innate.\n"
-    "What do you do?\n")    
+    "What do you do?\n"), 
 
-explore_dung_room_three_message = ("As you look towards the rest of the room after the puzzle was completed you are left to explore Akarak's person chamber."
+    ("As you look towards the rest of the room after the puzzle was completed you are left to explore Akarak's person chamber."
     "\nWithin this room contains a bed, multiple sets of drawers all of varying amounts of stability, a wardrobe and a bedside table.\n"
     "You look around at all the furniture that has been ultimately destroyed or covered with dust and rubble.\n"
     "The Akari merely lounges back onto the bed. Contempt with the puzzle it gave you and aims to rest.\n"
     "As you search through a few of the different drawers and wardrobes, you find a lockbox with a black sigil on it.\n"
-    "Unsure of what it is, you leave it on the side till you can find a small key for it somewhere within the room.\n")
+    "Unsure of what it is, you leave it on the side till you can find a small key for it somewhere within the room.\n"),
 
-explore_dung_room_four_message = ("Finally, you arrive at the depths of Akarak's tomb.\n"
+    ("Finally, you arrive at the depths of Akarak's tomb.\n"
     "A wide open room with a large entry way on both the left and right of the room stands tall.\n"
     "You notice a large stone coffin in the middle of the room.\n" 
     "You steel yourself, approaching the coffin and reading it.\n"
     "\"Akarak, The abandoned lich\" it read.\n" 
     "Your eyes scan the room around you again, from the middle,\n"
-    "you see a stone tablet on the opposite side of the entryway with empty holes.\n\n")
+    "you see a stone tablet on the opposite side of the entryway with empty holes.\n\n")]
 
+# Boulder dictionaries
+boulder_dictions = [ 
+    {"A": "\"Walk the balance beam\"",
+    "B": "\"Jump\""},
 
-# Ending, boulder dictionaries
-boulder_pitfall_dict = {"A": "\"Walk the balance beam\"",
-                        "B": "\"Jump\""}
+    {"A": "Hide in the corner",
+    "B": "\"Run for it!\""},
 
-boulder_hallway_dict = {"A": "Hide in the corner",
-                        "B": "\"Run for it!\""}
-
-boulder_exit_dict = {"A": "Use the focus of Akarak",
-                     "B": "\"Look for a hiding spot!\"",
-                     "C": "Push the boulder."}
-
+    {"A": "Use the focus of Akarak",
+    "B": "\"Look for a hiding spot!\"",
+    "C": "Push the boulder."}]
 
 # Boulder Messages
-boulder_pitfall_message = ("As you grab the focus, you feel its power course through you.\n"
-        "This is what you need to save your Father.\n"
-        "\tYou move out of the indent in the wall and head towards the doorway, However. The original entrance to the treasure room has closed behind you.\n"
-        "\tConfused, you look around as your attention is brought to the large gates. As you peek through, you hear a distant rumbling…\n" 
-        "\tThere\'s a bit of time before you realize a final trap has been placed, as a boulder lands in the door in front of you. You have to make a mad dash towards the exit now! Quickly run!\n"
-        "\tAs you run through the massive entryway, you realize it\'s a straight shot out to the other side of the mountain, traps and pits litter the way as paths converge and change.\n"
-        "\tThe twisting corridors and turning caverns throw you out to a pit of spikes.\n"
-        "\tA small balance beam stands in front of you. The boulder crashes into the wall behind you, giving you a chance to think about your next move.\n"
-        "\tWhat will you do? The Pit looks like you can make it if you jump.\n")
+boulder_message = [
+    ("As you grab the focus, you feel its power course through you.\n"
+    "This is what you need to save your Father.\n"
+    "\tYou move out of the indent in the wall and head towards the doorway, However. The original entrance to the treasure room has closed behind you.\n"
+    "\tConfused, you look around as your attention is brought to the large gates. As you peek through, you hear a distant rumbling…\n" 
+    "\tThere\'s a bit of time before you realize a final trap has been placed, as a boulder lands in the door in front of you. You have to make a mad dash towards the exit now! Quickly run!\n"
+    "\tAs you run through the massive entryway, you realize it\'s a straight shot out to the other side of the mountain, traps and pits litter the way as paths converge and change.\n"
+    "\tThe twisting corridors and turning caverns throw you out to a pit of spikes.\n"
+    "\tA small balance beam stands in front of you. The boulder crashes into the wall behind you, giving you a chance to think about your next move.\n"
+    "\tWhat will you do? The Pit looks like you can make it if you jump.\n"),
 
-boulder_hallway_message = ("\tAs you make your way towards the next challenge, you dash and slide towards dimly lit hallways as you find yourself walking into a small hallway.\n", 
+    ("\tAs you make your way towards the next challenge, you dash and slide towards dimly lit hallways as you find yourself walking into a small hallway.\n", 
     "\tAs you walk towards the entryway of the thin hallway, a necrotic bolt flies past you,\n" 
     "\tLanding directly onto the wall behind you, you manage to avoid it but realize that you may have to risk it and make a dash towards the end.\n"
     "\tYou also notice a gap small enough for you to hide into, deep enough to protect you and the focus from the boulder.\n" 
     "\tAfter you wave your hand in front of the same gap that shot the bolt, you notice it can only fire one bolt before needing to recharge.\n"
-    "\tWhat will you do?")
+    "\tWhat will you do?"),
 
-boulder_exit_message = ("\tThe final puzzle presents itself, the boulder blocking your way is the only thing between you and the way to save your father is a large spherical rock.\n", 
+    ("\tThe final puzzle presents itself, the boulder blocking your way is the only thing between you and the way to save your father is a large spherical rock.\n", 
     "\t You have a few options after examination of the current hallway. The focus thrums on your back as you could possibly use it… somehow.\n" 
-    "\tJudging by what you know of Akarak, perhaps there are some spirits willing to provide you aid if you were to channel your energies into it… but you wouldn’t know the cost of tapping into Akaraks own magic.\n"
+    "\tJudging by what you know of Akarak, perhaps there are some spirits willing to provide you aid if you were to channel your energies into it… but you wouldn\'t know the cost of tapping into Akaraks own magic.\n"
     "\tYou could attempt to look for a hiding spot and wait for the other boulder you believe is coming after this one to push it out of the hole yet that could risk you getting trapped between the stack of boulders.\n" 
     "\tFinally, you could always throw everything to the wind and push the boulder with all your might. Perhaps it might be enough to free yourself from the prison of cave systems.n"
-    "\tWhat will you do?")
-
+    "\tWhat will you do?")]
 
 # Boulder Success Messages
-boulder_pitfall_success = ("\tYou decide to play it safe, slowly advancing over the balance beam while the boulder slowly picks up momentum behind you. \n"
-                                   "\tThankfully, the wall crash managed to give you enough time to safely get across. You take a breath before running, the boulder falling into the pit and destroying the beam.\n"
-                                   "\tYou walk slowly ahead before you hear a familiar crashing sound. As another boulder crashes to the wall behind you. Safe to say you need to pick up the pace! As there may be more behind you!.\n")
+boulder_success_message = [
+    ("\tYou decide to play it safe, slowly advancing over the balance beam while the boulder slowly picks up momentum behind you. \n"
+    "\tThankfully, the wall crash managed to give you enough time to safely get across. You take a breath before running, the boulder falling into the pit and destroying the beam.\n"
+    "\tYou walk slowly ahead before you hear a familiar crashing sound. As another boulder crashes to the wall behind you. Safe to say you need to pick up the pace! As there may be more behind you!.\n"),
 
-boulder_hallway_success = ("\t You decide to play it safe again, clambering into the corner and hiding while the boulder rumbles past you. \n"
+    ("\tYou decide to play it safe again, clambering into the corner and hiding while the boulder rumbles past you. \n"
     "\t You hear the bolts of necrotic energy blast out from what you assume are crystals as they all blast against the wall.\n"
-    "\t You peek out and start walking towards the doorway, none of the bolts firing at you as their energy dims.\n"
-    "\t You make your way towards the exit, finding the boulder blocking the doorway.\n"
-    "\t You can see light try and reach through the sides of the boulder, the exit! You're almost there.")
+    "\tYou peek out and start walking towards the doorway, none of the bolts firing at you as their energy dims.\n"
+    "\tYou make your way towards the exit, finding the boulder blocking the doorway.\n"
+    "\tYou can see light try and reach through the sides of the boulder, the exit! You're almost there."),
 
-boulder_exit_success = ("\t With what you know of Akarak\'s magics, you attempt to channel whatever magical affinity you have into the focus. \n"
-    "\t The dim light hums as it shoots a beam of necrotic energy to the ground,\n"
-    "\t Raising the unlucky adventurers of the past from the ground, you looked shocked but explained to them your peril. They agree to help you, only to be free from this accursed place.\n"
-    "\t You accept as you and the skeletons push against the boulder, doing enough to push the boulder free it falls into the river below,\n"
-    "\t the path thankfully leads to the left, opening to a piece of flatland that allows you to roll over and land on your back.\n"
-    "\t You did it! You managed to escape with the focus, while gaining some understanding about the focus and how to wield it.")
-
+    ("\tWith what you know of Akarak\'s magics, you attempt to channel whatever magical affinity you have into the focus.\n"
+    "\tThe dim light hums as it shoots a beam of necrotic energy to the ground,\n"
+    "\tRaising the unlucky adventurers of the past from the ground, you looked shocked but explained to them your peril. They agree to help you, only to be free from this accursed place.\n"
+    "\tYou accept as you and the skeletons push against the boulder, doing enough to push the boulder free it falls into the river below,\n"
+    "\tthe path thankfully leads to the left, opening to a piece of flatland that allows you to roll over and land on your back.\n"
+    "\tYou did it! You managed to escape with the focus, while gaining some understanding about the focus and how to wield it.")]
 
 # Boulder Failure Messages
-boulder_pitfall_failure = ("\tTime is against you, you don't have time to cross a rickety beam.\n" 
-                          "\tYou run back, and try to make a jump for it. \n"
-                          "\tAs you fly through the air, the boulder picks up the momentum and starts to roll behind you, that throws off your landing as the loud crashing causes you to recoil from the sound.\n"
-                          "\tAs you land, you wobble unsteadily as you land on the edge and topple behind, falling into the pit.\n" 
-                          "\tYou land with a thud as the boulder crushes you and the focus. Dooming your father to his withering undeath.")
-    
-boulder_hallway_failure = ("\tTime is against you! You have to MOVE! You dash through the gauntlet of crystals as the last one hits your leg.\n" 
-    "\tYou wince in pain but have to push through, seeing the light at the end of the tunnel.  \n"
+boulder_failure_message = [
+    ("\tTime is against you, you don't have time to cross a rickety beam.\n" 
+    "\tYou run back, and try to make a jump for it. \n"
+    "\tAs you fly through the air, the boulder picks up the momentum and starts to roll behind you, that throws off your landing as the loud crashing causes you to recoil from the sound.\n"
+    "\tAs you land, you wobble unsteadily as you land on the edge and topple behind, falling into the pit.\n" 
+    "\tYou land with a thud as the boulder crushes you and the focus. Dooming your father to his withering undeath."),
+        
+    ("\tTime is against you! You have to MOVE! You dash through the gauntlet of crystals as the last one hits your leg.\n" 
+    "\tYou wince in pain but have to push through, seeing the light at the end of the tunnel.\n"
     "\tAs you keep moving, you feel the necrotic energies pulse through your leg, making you have to limp\n"
-    "\tAs you approach the entryway, your right leg is fully numb, and you can't stand up straight. \n" 
-    "\tTumbling to the floor as the focus falls in front of you. The roaring of the boulder coming crashing down, it rolling over you and getting trapped within the door.")
+    "\tAs you approach the entryway, your right leg is fully numb, and you can't stand up straight.\n" 
+    "\tTumbling to the floor as the focus falls in front of you. The roaring of the boulder coming crashing down, it rolling over you and getting trapped within the door."),
 
-boulder_exit_failure = ("\tYou examine the hallway again, you see a small crevice that is enough to fit you, but not the focus. \n"
+    ("\tYou examine the hallway again, you see a small crevice that is enough to fit you, but not the focus. \n"
     "\tRealizing the issues that come with leaving the focus behind, you have to accept that this is not possible, the boulder crashing behind you as you keep looking.\n"
     "\t It rolls against the walls and catches up, you have no choice, you dive for the hole from before, getting as much of the focus in as you can but it snaps in half as the boulder crashes against the other boulder.\n"
-    "\t Only making a bigger pile of boulders. You hear Akarak\'s voice. \"Another failure… another corpse...\" as you instantly feel your body wither way, much like your father\'s you note. As you are trapped into a small tomb for yourself, forever.")
+    "\t Only making a bigger pile of boulders. You hear Akarak\'s voice. \"Another failure… another corpse...\" as you instantly feel your body wither way, much like your father\'s you note. As you are trapped into a small tomb for yourself, forever."),
 
-boulder_exit_failure_alternative = ("\tYou steel your nerves and push against the boulder, using all your strength to attempt to dislodge the boulder.\n" 
-    "\tThe muscles in your body screaming to not strain yourself but you press on, to no avail \n"
-    "\tThe boulder crashes behind you, as you try even harder but fail as the boulder crashes into you, flattening you and crushing the focus. Dooming both you and your father...\n")
+    ("\tYou steel your nerves and push against the boulder, using all your strength to attempt to dislodge the boulder.\n" 
+    "\tThe muscles in your body screaming to not strain yourself but you press on, to no avail\n"
+    "\tThe boulder crashes behind you, as you try even harder but fail as the boulder crashes into you, flattening you and crushing the focus. Dooming both you and your father...\n")]
 
 game()
