@@ -104,9 +104,22 @@ def game():
         game()
     
     if rooms(explore_dung_room_four_message, explore_dung_room_four_choices_dict, 4):
-        puzzles(dungeon_room_four_message, solution_puzzle_five, success_message_puzzle_five,fail_message_puzzle_five)
+        if not puzzles(dungeon_room_four_message, solution_puzzle_five, success_message_puzzle_five,fail_message_puzzle_five):
+            game()
     else:
         game()
+
+    if boulder(boulder_pitfall_message, boulder_pitfall_dict, boulder_pitfall_success, boulder_pitfall_failure):
+        if not boulder(boulder_hallway_message, boulder_hallway_dict, boulder_hallway_success, boulder_hallway_failure):
+            game()
+    else:
+        game()
+    
+    if boulder(boulder_exit_message, boulder_exit_dict, boulder_hallway_success, boulder_hallway_failure):
+        epilogue_story()
+    else:
+        game()
+    
 
 
 def life_system(action, question):
@@ -441,6 +454,48 @@ def dung_explore_4_choices(chc):
 
 ################################################################################
 # Dungeon puzzles
+def boulder(message, dict, success_message, fail_message):
+    global life
+    cls()
+    slow_writting(message)
+    while True:
+        print("You can:\n\t", end ="")
+        for k, v in dict.items():
+            print(f"{k}.{v}", end="\n\t")
+        
+        print(f"\t\tLives left: {life}")
+        
+        player_answer = input('Answer: ')
+        if player_answer.upper() == "A":
+                slow_writting(success_message)
+                contin()
+                return True
+        elif player_answer.upper() == "B":
+            life_system(0, 0)
+            if life == 2:
+                life_message = "You have 2 lifes left. Focus...\n"
+                print(life_message)
+
+            elif life == 1:
+                last_life_message = "...This is Your last chance so think twice before You will answer...\n"
+                print(last_life_message)
+
+            elif not life:
+                cls()
+                slow_writting(fail_message)
+                lost()
+                return False
+        
+        elif len(dict) >= 3:
+            if player_answer.upper() == "C":
+                slow_writting(boulder_exit_failure_alternative)
+                lost()
+                contin()
+                return False
+        else:
+            print("A or B only.")
+
+
 def entry_room(): # Puzzle 1
     choices = ["A", "B", "C"]
     global life
@@ -500,167 +555,15 @@ def puzzles(message, answer, success_message, fail_message):
                 last_life_message = "...This is Your last chance so think twice before You will answer...\n"
                 print(last_life_message)
 
-            elif not life:
+            elif life == 0:
                 cls()
                 slow_writting(fail_message)
                 lost()
                 return False
 
 
-def boulder_chase_pitfall(): 
-    global life
-    choices = ["A", "B"]
-    pitfall_message = ("As you grab the focus, you feel its power course through you.\n"
-        "This is what you need to save your Father.\n"
-        "\tYou move out of the indent in the wall and head towards the doorway, However. The original entrance to the treasure room has closed behind you.\n"
-        "\tConfused, you look around as your attention is brought to the large gates. As you peek through, you hear a distant rumbling…\n" 
-        "\tThere\'s a bit of time before you realize a final trap has been placed, as a boulder lands in the door in front of you. You have to make a mad dash towards the exit now! Quickly run!\n"
-        "\tAs you run through the massive entryway, you realize it\'s a straight shot out to the other side of the mountain, traps and pits litter the way as paths converge and change.\n"
-        "\tThe twisting corridors and turning caverns throw you out to a pit of spikes.\n"
-        "\tA small balance beam stands in front of you. The boulder crashes into the wall behind you, giving you a chance to think about your next move.\n"
-        "\tWhat will you do? The Pit looks like you can make it if you jump.\n")
-    slow_writting(pitfall_message)
-    print(f"\tA:\"Walk the balance beam\" \tB: \"Jump!\"")
-    while True:
-        print(f"Lives left: {life}")
-        player_choice = input(f'Action: ')
-        if player_choice.upper() in choices:
-            if player_choice.upper() == 'A':
-                success_message = ("\tYou decide to play it safe, slowly advancing over the balance beam while the boulder slowly picks up momentum behind you. \n"
-                                   "\tThankfully, the wall crash managed to give you enough time to safely get across. You take a breath before running, the boulder falling into the pit and destroying the beam.\n"
-                                   "\tYou walk slowly ahead before you hear a familiar crashing sound. As another boulder crashes to the wall behind you. Safe to say you need to pick up the pace! As there may be more behind you!.\n")
-                
-                slow_writting(success_message)
-                contin()
-
-                return True
-            
-            if player_choice.upper() == "B":
-                life_system(0, 0)
-                if life:
-                    print("You try to jump but you fail and almost fall into the pit.")
-                    print("(Lose 1 life)")
-
-                elif not life:
-                    print("\tTime is against you, you don't have time to cross a rickety beam.\n" 
-                          "\tYou run back, and try to make a jump for it. \n"
-                          "\tAs you fly through the air, the boulder picks up the momentum and starts to roll behind you, that throws off your landing as the loud crashing causes you to recoil from the sound.\n"
-                          "\tAs you land, you wobble unsteadily as you land on the edge and topple behind, falling into the pit.\n" 
-                          "\tYou land with a thud as the boulder crushes you and the focus. Dooming your father to his withering undeath.")
-                    contin()
-                    return False
-        else:
-            print("Type only A or B.")
-        slow_writting(pitfall_message)
-        return boulder_chase_pitfall    
-    
-
-def boulder_chase_hallway():
-    choices_2 = ["A", "B"]
-    global life
-    hallway_message = ("\tAs you make your way towards the next challenge, you dash and slide towards dimly lit hallways as you find yourself walking into a small hallway.\n", 
-                     "\tAs you walk towards the entryway of the thin hallway, a necrotic bolt flies past you,\n" 
-                     "\tLanding directly onto the wall behind you, you manage to avoid it but realize that you may have to risk it and make a dash towards the end.\n"
-                     "\tYou also notice a gap small enough for you to hide into, deep enough to protect you and the focus from the boulder.\n" 
-                     "\tAfter you wave your hand in front of the same gap that shot the bolt, you notice it can only fire one bolt before needing to recharge.\n"
-                     "\tWhat will you do?")
-    slow_writting(hallway_message)
-    while True:
-        player_choice = input(f"Answers: Type A to hide in the Corner, Type B to Run for it! \t Lives left= {life} ")
-        if player_choice.upper() in choices_2:
-            if player_choice.upper() == 'A':
-                success_message = ("\t You decide to play it safe again, clambering into the corner and hiding while the boulder rumbles past you. \n"
-                                   "\t You hear the bolts of necrotic energy blast out from what you assume are crystals as they all blast against the wall.\n"
-                                   "\t You peek out and start walking towards the doorway, none of the bolts firing at you as their energy dims.\n"
-                                   "\t You make your way towards the exit, finding the boulder blocking the doorway.\n"
-                                   "\t You can see light try and reach through the sides of the boulder, the exit! You're almost there.")
-                
-                slow_writting(success_message)
-                contin()
-                continue
-            if player_choice.upper() == "B":
-                life_system(0, 1)
-                if life > 0:
-                    continue
-                else:
-                    print("Game OVER")
-                    return False
-            if player_choice.upper() == "B":
-                if life == 0:
-                    lost()
-                    print("\tTime is against you! You have to MOVE! You dash through the gauntlet of crystals as the last one hits your leg.\n" 
-                          "\tYou wince in pain but have to push through, seeing the light at the end of the tunnel.  \n"
-                          "\tAs you keep moving, you feel the necrotic energies pulse through your leg, making you have to limp\n"
-                          "\tAs you approach the entryway, your right leg is fully numb, and you can't stand up straight. \n" 
-                          "\tTumbling to the floor as the focus falls in front of you. The roaring of the boulder coming crashing down, it rolling over you and getting trapped within the door.")
-                contin()
-                return False
-        else:
-            print("Type only A or B.")
-        slow_writting(hallway_message)
-        return boulder_chase_pitfall 
-    
-
-def boulder_chase_exit():
-    choices_3 = ["A", "B", "C"]
-    global life
-    exit_message = ("\tThe final puzzle presents itself, the boulder blocking your way is the only thing between you and the way to save your father is a large spherical rock.\n", 
-                     "\t You have a few options after examination of the current hallway. The focus thrums on your back as you could possibly use it… somehow.\n" 
-                     "\tJudging by what you know of Akarak, perhaps there are some spirits willing to provide you aid if you were to channel your energies into it… but you wouldn’t know the cost of tapping into Akaraks own magic.\n"
-                     "\tYou could attempt to look for a hiding spot and wait for the other boulder you believe is coming after this one to push it out of the hole yet that could risk you getting trapped between the stack of boulders.\n" 
-                     "\tFinally, you could always throw everything to the wind and push the boulder with all your might. Perhaps it might be enough to free yourself from the prison of cave systems.n"
-                     "\tWhat will you do?")
-    slow_writting(exit_message)
-    while True:
-        player_choice = input(f"Answers: Type A to use the focus of Akarak, Type B to look for a hiding spot!, Type C to Push the boulder! Lifes remaining = {life}")
-        if player_choice.upper() in choices_3:
-            if player_choice.upper() == 'A':
-                success_message = ("\t With what you know of Akarak’s magics, you attempt to channel whatever magical affinity you have into the focus. \n"
-                                   "\t The dim light hums as it shoots a beam of necrotic energy to the ground,\n"
-                                   "\t Raising the unlucky adventurers of the past from the ground, you looked shocked but explained to them your peril. They agree to help you, only to be free from this accursed place.\n"
-                                   "\t You accept as you and the skeletons push against the boulder, doing enough to push the boulder free it falls into the river below,\n"
-                                   "\t the path thankfully leads to the left, opening to a piece of flatland that allows you to roll over and land on your back.\n"
-                                   "\t You did it! You managed to escape with the focus, while gaining some understanding about the focus and how to wield it.")
-                
-                slow_writting(success_message)
-                contin()
-                return True
-            if player_choice.upper() == "B":
-                life_system(0, 1)
-                if life > 0:
-                    continue
-            if player_choice.upper() == "B":
-                if life == 0:
-                    lost()
-                    print("\tYou examine the hallway again, you see a small crevice that is enough to fit you, but not the focus. \n"
-                          "\tRealizing the issues that come with leaving the focus behind, you have to accept that this is not possible, the boulder crashing behind you as you keep looking.\n"
-                          "\t It rolls against the walls and catches up, you have no choice, you dive for the hole from before, getting as much of the focus in as you can but it snaps in half as the boulder crashes against the other boulder.\n"
-                          "\t Only making a bigger pile of boulders. You hear Akarak’s voice. “Another failure… another corpse…” as you instantly feel your body wither way, much like your father’s you note. As you are trapped into a small tomb for yourself, forever.")
-                contin()
-                return False
-            if player_choice.upper() == "C":
-                life_system(0, 1)
-                if life > 0:
-                    continue
-            if player_choice.upper() == "C":
-                if life == 0:
-                    lost()
-                    print("\tYou steel your nerves and push against the boulder, using all your strength to attempt to dislodge the boulder.\n" 
-                          "\tThe muscles in your body screaming to not strain yourself but you press on, to no avail \n"
-                          "\tThe boulder crashes behind you, as you try even harder but fail as the boulder crashes into you, flattening you and crushing the focus. Dooming both you and your father...\n")
-                contin()
-                return False
-        else:
-            print("Type only A, B or C")
-        slow_writting(exit_message)
-        return boulder_chase_exit
-
-
-def epilogue_one():
-    (boulder_chase_pitfall(), boulder_chase_hallway(), boulder_chase_exit())
-
-
-def escape():
+# Ending Story
+def epilogue_story():
     escape_message = ("\t As you stand up onto the flatland, you find your way back up the mountain, a staircase and a little bit of climbing allows you to reach the entryway of the tomb. The Akari looks to you.\n"
                       "\t “...Consider me shocked to see you succeed, you are worthy of Akarak's treasure.” You nod, looking at the staff on your back.\n"
                       "\t “The curse of Withering is dispelled by absorbing the necrotic energies back into the staff, by that point your father's body should be able to heal.\n”"
@@ -669,8 +572,6 @@ def escape():
     slow_writting(escape_message)
     contin()
 
-
-def epilogue():
     epilogue = ("\t As you enter the home, you feel the pained wails of your father as you remember. It was never nice to deal with but you venture upstairs to where he lay.\n"
                 "\t With the knowledge you gained from Akarak's tomb and from the chase at the end, you siphon the energies of the curse on your father into Akarak's focus.\n"
                 "\t Him finally resting peacefully, breathing slowly. As the pain seems to lighten from Glaen's body. You fall backwards, falling into a sitting position.\n"
@@ -681,11 +582,6 @@ def epilogue():
     contin()
 
 
-def finale():
-    escape()
-    epilogue()
-
-boulder_chase_pitfall()
 # Introduction story
 def story_intro():
     message = ("Within the ruins of Akarak, lies an ancient and forgotten curse...\n"
@@ -718,6 +614,7 @@ def welcome_message():
     while name == '':
         name = input("\nEnter your name and let's get started: ")
     cls()
+
 
 # Answers
 solution_puzzle_two = 'death'
@@ -843,5 +740,83 @@ explore_dung_room_four_message = ("Finally, you arrive at the depths of Akarak's
     "you see a stone tablet on the opposite side of the entryway with empty holes.\n\n")
 
 
-#game()
+# Ending, boulder dictionaries
+boulder_pitfall_dict = {"A": "\"Walk the balance beam\"",
+                        "B": "\"Jump\""}
 
+boulder_hallway_dict = {"A": "Hide in the corner",
+                        "B": "\"Run for it!\""}
+
+boulder_exit_dict = {"A": "Use the focus of Akarak",
+                     "B": "\"Look for a hiding spot!\"",
+                     "C": "Push the boulder."}
+
+
+# Boulder Messages
+boulder_pitfall_message = ("As you grab the focus, you feel its power course through you.\n"
+        "This is what you need to save your Father.\n"
+        "\tYou move out of the indent in the wall and head towards the doorway, However. The original entrance to the treasure room has closed behind you.\n"
+        "\tConfused, you look around as your attention is brought to the large gates. As you peek through, you hear a distant rumbling…\n" 
+        "\tThere\'s a bit of time before you realize a final trap has been placed, as a boulder lands in the door in front of you. You have to make a mad dash towards the exit now! Quickly run!\n"
+        "\tAs you run through the massive entryway, you realize it\'s a straight shot out to the other side of the mountain, traps and pits litter the way as paths converge and change.\n"
+        "\tThe twisting corridors and turning caverns throw you out to a pit of spikes.\n"
+        "\tA small balance beam stands in front of you. The boulder crashes into the wall behind you, giving you a chance to think about your next move.\n"
+        "\tWhat will you do? The Pit looks like you can make it if you jump.\n")
+
+boulder_hallway_message = ("\tAs you make your way towards the next challenge, you dash and slide towards dimly lit hallways as you find yourself walking into a small hallway.\n", 
+    "\tAs you walk towards the entryway of the thin hallway, a necrotic bolt flies past you,\n" 
+    "\tLanding directly onto the wall behind you, you manage to avoid it but realize that you may have to risk it and make a dash towards the end.\n"
+    "\tYou also notice a gap small enough for you to hide into, deep enough to protect you and the focus from the boulder.\n" 
+    "\tAfter you wave your hand in front of the same gap that shot the bolt, you notice it can only fire one bolt before needing to recharge.\n"
+    "\tWhat will you do?")
+
+boulder_exit_message = ("\tThe final puzzle presents itself, the boulder blocking your way is the only thing between you and the way to save your father is a large spherical rock.\n", 
+    "\t You have a few options after examination of the current hallway. The focus thrums on your back as you could possibly use it… somehow.\n" 
+    "\tJudging by what you know of Akarak, perhaps there are some spirits willing to provide you aid if you were to channel your energies into it… but you wouldn’t know the cost of tapping into Akaraks own magic.\n"
+    "\tYou could attempt to look for a hiding spot and wait for the other boulder you believe is coming after this one to push it out of the hole yet that could risk you getting trapped between the stack of boulders.\n" 
+    "\tFinally, you could always throw everything to the wind and push the boulder with all your might. Perhaps it might be enough to free yourself from the prison of cave systems.n"
+    "\tWhat will you do?")
+
+
+# Boulder Success Messages
+boulder_pitfall_success = ("\tYou decide to play it safe, slowly advancing over the balance beam while the boulder slowly picks up momentum behind you. \n"
+                                   "\tThankfully, the wall crash managed to give you enough time to safely get across. You take a breath before running, the boulder falling into the pit and destroying the beam.\n"
+                                   "\tYou walk slowly ahead before you hear a familiar crashing sound. As another boulder crashes to the wall behind you. Safe to say you need to pick up the pace! As there may be more behind you!.\n")
+
+boulder_hallway_success = ("\t You decide to play it safe again, clambering into the corner and hiding while the boulder rumbles past you. \n"
+    "\t You hear the bolts of necrotic energy blast out from what you assume are crystals as they all blast against the wall.\n"
+    "\t You peek out and start walking towards the doorway, none of the bolts firing at you as their energy dims.\n"
+    "\t You make your way towards the exit, finding the boulder blocking the doorway.\n"
+    "\t You can see light try and reach through the sides of the boulder, the exit! You're almost there.")
+
+boulder_exit_success = ("\t With what you know of Akarak\'s magics, you attempt to channel whatever magical affinity you have into the focus. \n"
+    "\t The dim light hums as it shoots a beam of necrotic energy to the ground,\n"
+    "\t Raising the unlucky adventurers of the past from the ground, you looked shocked but explained to them your peril. They agree to help you, only to be free from this accursed place.\n"
+    "\t You accept as you and the skeletons push against the boulder, doing enough to push the boulder free it falls into the river below,\n"
+    "\t the path thankfully leads to the left, opening to a piece of flatland that allows you to roll over and land on your back.\n"
+    "\t You did it! You managed to escape with the focus, while gaining some understanding about the focus and how to wield it.")
+
+
+# Boulder Failure Messages
+boulder_pitfall_failure = ("\tTime is against you, you don't have time to cross a rickety beam.\n" 
+                          "\tYou run back, and try to make a jump for it. \n"
+                          "\tAs you fly through the air, the boulder picks up the momentum and starts to roll behind you, that throws off your landing as the loud crashing causes you to recoil from the sound.\n"
+                          "\tAs you land, you wobble unsteadily as you land on the edge and topple behind, falling into the pit.\n" 
+                          "\tYou land with a thud as the boulder crushes you and the focus. Dooming your father to his withering undeath.")
+    
+boulder_hallway_failure = ("\tTime is against you! You have to MOVE! You dash through the gauntlet of crystals as the last one hits your leg.\n" 
+    "\tYou wince in pain but have to push through, seeing the light at the end of the tunnel.  \n"
+    "\tAs you keep moving, you feel the necrotic energies pulse through your leg, making you have to limp\n"
+    "\tAs you approach the entryway, your right leg is fully numb, and you can't stand up straight. \n" 
+    "\tTumbling to the floor as the focus falls in front of you. The roaring of the boulder coming crashing down, it rolling over you and getting trapped within the door.")
+
+boulder_exit_failure = ("\tYou examine the hallway again, you see a small crevice that is enough to fit you, but not the focus. \n"
+    "\tRealizing the issues that come with leaving the focus behind, you have to accept that this is not possible, the boulder crashing behind you as you keep looking.\n"
+    "\t It rolls against the walls and catches up, you have no choice, you dive for the hole from before, getting as much of the focus in as you can but it snaps in half as the boulder crashes against the other boulder.\n"
+    "\t Only making a bigger pile of boulders. You hear Akarak\'s voice. \"Another failure… another corpse...\" as you instantly feel your body wither way, much like your father\'s you note. As you are trapped into a small tomb for yourself, forever.")
+
+boulder_exit_failure_alternative = ("\tYou steel your nerves and push against the boulder, using all your strength to attempt to dislodge the boulder.\n" 
+    "\tThe muscles in your body screaming to not strain yourself but you press on, to no avail \n"
+    "\tThe boulder crashes behind you, as you try even harder but fail as the boulder crashes into you, flattening you and crushing the focus. Dooming both you and your father...\n")
+
+game()
