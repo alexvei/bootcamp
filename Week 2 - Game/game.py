@@ -6,11 +6,8 @@ import time     # built-in python module for time
 
 ################################################################################
 # Global Variables 
-father = 'glaen'
 name = ''
-nor = 'nor'
 life = 3
-
 
 ################################################################################
 # Systems/ functions
@@ -29,18 +26,13 @@ def contin():
 def continuation_choice():
     slow_writting("Do you wish to explore more?(y/n) \n")
     user_choice = input("Choice: ")
-    if user_choice.lower() == 'y':
-        cls()
-        return True
-    else:
-        cls()
-        return False 
-
+    cls()
+    return True if user_choice.lower() == 'y' else False
 
 def exploration_options(options_dict):
     print("You can:")
-    for i in options_dict:
-        print(f"\t"*i,f"{i}.{options_dict[i]}")
+    for k, v in options_dict.items():
+        print(f"\t"*k,f"{k}.{v}")
 
     while(True):
         try:
@@ -54,13 +46,6 @@ def exploration_options(options_dict):
                 print(f"A valid number.")
         except ValueError:
             print(f"A number please.")
-
-
-def globals():
-    global father, life, name, nor
-    father = 'Glaen'
-    life = 3
-    nor = 'nor'
 
 
 def life_system(action, question):
@@ -166,7 +151,7 @@ def dung_explore_1(): # This is exploration after puzzle 2
         cls()
         result = dung_explore_1_choices(player_choice)
         choices_dict.pop(player_choice)
-        if player_choice == 1:
+        if player_choice == 1 or player_choice == 4:
             break
         if not continuation_choice():
             break 
@@ -216,7 +201,7 @@ def dung_explore_1_choices(chc):
         contin()
         print("You've died and have to start again.")
         contin()
-        return 0 #Game over state needed.
+        return False #Game over state needed.
 
 
 def dung_explore_2(): # This is exploration after puzzle 3
@@ -340,11 +325,15 @@ def dung_explore_3(): # This is exploration after puzzle 4
                 result = dung_explore_3_choice_5()
 
             choices_dict.pop(user_choice)
-            if user_choice == 2:
-                break
-            if not continuation_choice():
-                break 
-        
+            
+            if life > 0:
+                if user_choice == 2:
+                    break
+                if not continuation_choice():
+                    break 
+            else:
+                return False
+            
         return result
 
 
@@ -659,7 +648,7 @@ def dung_room_2(): # Puzzle 3
 
 def dung_room_3(): # Puzzle 4
     cls()
-    message = ("Venturing deeper into the tomb, you happen upon Akarak's chambers, Gathering dust and seemingly destroyed...\n"
+    message = ("\tVenturing deeper into the tomb, you happen upon Akarak's chambers, Gathering dust and seemingly destroyed...\n"
     "\tYou examine more and more of the room and notice the indent in the wall opposite the door you came from.\n"
     "\tIt was then you heard a noise upon the destroyed and dusty bed.\n" 
     "\tAn Akari, a small one. About the size of a puppy, it looks up to you and speaks.\n"
@@ -746,48 +735,49 @@ def dung_room_4(): # Puzzle 5
                 contin()
                 return False
 
-
-def boulder_chase_pitfall(): #Boulder chase/Epilogue
-    choices_2 = ["A", "B"]
+#start of the ending sequence.
+def boulder_chase_pitfall(): 
     global life
-    pitfall_message = ("\tAs you grab the focus, you feel its power course through you, This is what you need to save your Father. You move out of the indent in the wall and head towards the doorway\n", 
-                     "\tHowever. The original entrance to the treasure room has closed behind you.\n" 
-                     "\tConfused, you look around as your attention is brought to the large gates. As you peek through, you hear a distant rumbling...\n"
-                     "\tThere is a bit of time before you realize a final trap has been activated, as a boulder lands in the door in front of you.\n" 
-                     "\tYou have to make a mad dash towards the exit now! Quickly run!\n"
-                     "\tAs you run through the massive entryway, you realize it is a straight shot out to the other side of the mountain, traps and pits litter the way as paths converge and change.\n" 
-                     "\tThe twisting corridors and turning caverns throw you out to a pit of spikes. A small balance beam stands in front of you. The boulder crashes into the wall behind you, giving you a chance to think about your next move.\n" 
-                     "\tWhat will you do? The Pit looks like you can make it if you jump. Type A to cross by the Beam, Type B to jump across!")
+    choices_2 = ["A", "B"]
+    pitfall_message = ("\t As you grab the focus, you feel its power course through you, This is what you need to save your Father.\n"
+                       "You move out of the indent in the wall and head towards the doorway, However. The original entrance to the treasure room has closed behind you.\n"
+                       "\t Confused, you look around as your attention is brought to the large gates. As you peek through, you hear a distant rumbling…\n" 
+                       "\tThere’s a bit of time before you realize a final trap has been placed, as a boulder lands in the door in front of you. You have to make a mad dash towards the exit now! Quickly run!\n"
+                       "\t As you run through the massive entryway, you realize it’s a straight shot out to the other side of the mountain, traps and pits litter the way as paths converge and change. The twisting corridors and turning caverns throw you out to a pit of spikes. A small balance beam stands in front of you. The boulder crashes into the wall behind you, giving you a chance to think about your next move.\n"
+                       "\tWhat will you do? The Pit looks like you can make it if you jump.\n")
+    
     slow_writting(pitfall_message)
+
     while True:
-        player_choice = input(f'Answers: A:"Use_the_beam" B: "Jump!" "\t\t Lives left= {life}')
+        print("A.\"Use_the_beam\"", "B: \"Jump!\"", f"\t Lives left = {life}")
+        player_choice = input("Answer: ")
         if player_choice.upper() in choices_2:
             if player_choice.upper() == 'A':
                 success_message = ("\tYou decide to play it safe, slowly advancing over the balance beam while the boulder slowly picks up momentum behind you. \n"
-                                   "\tThankfully, the wall crash managed to give you enough time to safely get across. You take a breath before running, the boulder falling into the pit and destroying the beam.\n"
-                                   "\tYou walk slowly ahead before you hear a familiar crashing sound. As another boulder crashes to the wall behind you. Safe to say you need to pick up the pace! As there may be more behind you!.\n")
+                "\tThankfully, the wall crash managed to give you enough time to safely get across. You take a breath before running, the boulder falling into the pit and destroying the beam.\n"
+                "\tYou walk slowly ahead before you hear a familiar crashing sound. As another boulder crashes to the wall behind you. Safe to say you need to pick up the pace! As there may be more behind you!.\n")
                 
                 slow_writting(success_message)
                 contin()
                 return True
+
             if player_choice.upper() == "B":
-                life_system(0, 1)
-                if life > 0:
-                 continue
-            if player_choice.upper() == "B":
-                if life == 0:
+                life_system(0, 0)
+                if life:
+                    pass
+                elif not life:
                     lost()
                     print("\tTime is against you, you don't have time to cross a rickety beam.\n" 
-                          "\tYou run back, and try to make a jump for it. \n"
-                          "\tAs you fly through the air, the boulder picks up the momentum and starts to roll behind you, that throws off your landing as the loud crashing causes you to recoil from the sound.\n"
-                          "\tAs you land, you wobble unsteadily as you land on the edge and topple behind, falling into the pit.\n" 
-                          "\tYou land with a thud as the boulder crushes you and the focus. Dooming your father to his withering undeath.")
-                contin()
-                return False
+                    "\tYou run back, and try to make a jump for it. \n"
+                    "\tAs you fly through the air, the boulder picks up the momentum and starts to roll behind you, that throws off your landing as the loud crashing causes you to recoil from the sound.\n"
+                    "\tAs you land, you wobble unsteadily as you land on the edge and topple behind, falling into the pit.\n" 
+                    "\tYou land with a thud as the boulder crushes you and the focus. Dooming your father to his withering undeath.")
+                    contin()
+                    return False
         else:
             print("Type only A or B.")
-        slow_writting(pitfall_message)
-        return boulder_chase_pitfall    
+
+    return boulder_chase_pitfall    
     
 
 def boulder_chase_hallway():
@@ -812,15 +802,14 @@ def boulder_chase_hallway():
                 
                 slow_writting(success_message)
                 contin()
-                return ()
+                return True
             if player_choice.upper() == "B":
                 life_system(0, 1)
                 if life > 0:
-                    continue
-            else:
-                cls()
-                life_system(0, 1)
+                 continue
+            if player_choice.upper() == "B":
                 if life == 0:
+                    lost()
                     print("\tTime is against you! You have to MOVE! You dash through the gauntlet of crystals as the last one hits your leg.\n" 
                           "\tYou wince in pain but have to push through, seeing the light at the end of the tunnel.  \n"
                           "\tAs you keep moving, you feel the necrotic energies pulse through your leg, making you have to limp\n"
@@ -831,7 +820,7 @@ def boulder_chase_hallway():
         else:
             print("Type only A or B.")
         slow_writting(hallway_message)
-        return boulder_chase_hallway
+        return boulder_chase_pitfall 
     
 
 def boulder_chase_exit():
@@ -845,7 +834,7 @@ def boulder_chase_exit():
                      "\tWhat will you do?")
     slow_writting(exit_message)
     while True:
-        player_choice = input(f"Answers: Type A to use the focus of Akarak, Type B to look for a hiding spot!, Type C to Push the boulder! Lifes remaining = {life}")
+        player_choice = input(f"Answers: Type A to use the focus of Akarak, Type B to look for a hiding spot!, Type C to Push the boulder! Lifes remaining = {life} ")
         if player_choice.upper() in choices_3:
             if player_choice.upper() == 'A':
                 success_message = ("\t With what you know of Akarak’s magics, you attempt to channel whatever magical affinity you have into the focus. \n"
@@ -861,11 +850,10 @@ def boulder_chase_exit():
             if player_choice.upper() == "B":
                 life_system(0, 1)
                 if life > 0:
-                    continue
-            if player_choice.upper() == 'B':
-                cls()
-                life_system(0, 1)
+                    pass
+            if player_choice.upper() == "B":
                 if life == 0:
+                    lost()
                     print("\tYou examine the hallway again, you see a small crevice that is enough to fit you, but not the focus. \n"
                           "\tRealizing the issues that come with leaving the focus behind, you have to accept that this is not possible, the boulder crashing behind you as you keep looking.\n"
                           "\t It rolls against the walls and catches up, you have no choice, you dive for the hole from before, getting as much of the focus in as you can but it snaps in half as the boulder crashes against the other boulder.\n"
@@ -876,10 +864,9 @@ def boulder_chase_exit():
                 life_system(0, 1)
                 if life > 0:
                     continue
-            if player_choice.upper() == 'C':
-                cls()
-                life_system(0, 1)
+            if player_choice.upper() == "C":
                 if life == 0:
+                    lost()
                     print("\tYou steel your nerves and push against the boulder, using all your strength to attempt to dislodge the boulder.\n" 
                           "\tThe muscles in your body screaming to not strain yourself but you press on, to no avail \n"
                           "\tThe boulder crashes behind you, as you try even harder but fail as the boulder crashes into you, flattening you and crushing the focus. Dooming both you and your father...\n")
@@ -892,7 +879,9 @@ def boulder_chase_exit():
 
 
 def epilogue_one():
-    (boulder_chase_pitfall(), boulder_chase_hallway(), boulder_chase_exit())
+    boulder_chase_pitfall()
+    boulder_chase_hallway() 
+    return boulder_chase_exit()
 
 
 def escape():
@@ -917,25 +906,26 @@ def epilogue():
 
 
 def finale():
-    (escape(), epilogue())
+    escape()
+    epilogue()
 
 
 ################################################################################
 def story_intro():
-    message = (f"Within the ruins of Akarak, lies an ancient and forgotten curse...\n"
-    f"Foolishly, your father {father.capitalize()} sought out these riches within the Tomb of Akarak, a place\n"
+    message = ("Within the ruins of Akarak, lies an ancient and forgotten curse...\n"
+    "Foolishly, your father Glaen sought out these riches within the Tomb of Akarak, a place\n"
     "feared and known for being a perilous journey of twisting corridors\n"
-    f"and mind-boggling riddles. {father.capitalize()} failed to escape with the treasure, having to\n"
+    "and mind-boggling riddles. Glaen failed to escape with the treasure, having to\n"
     "leave it behind to save their own life, Akarak's lingering will curse them\n"
     "to a fate worth that death. Immortality, but endless pain. They have been\n"
     "bedridden ever since and have lost themselves in their own torment.\n")
 
-    message_two = (f"You are {name.capitalize()}, You are the child of {father.capitalize()}.\n" 
+    message_two = (f"You are {name.capitalize()}, You are the child of Glaen.\n" 
     "He is suffering from the curse of Akarak, writhing in pain and anguish as it slowly eats away at them, consuming their flesh and soul into nothing more than a mindless husk.\n" 
     "You began to search for answers, solutions, anything to help your father out to not see home rite and wither away into a shambling mound of madness.\n" 
     "A traveling old hermit visited your village of Ransburg, hailing themselves as an ex-disciple of Akarak.\n"
-    f"She was named {nor.capitalize()}, you asked for her aid, mention the situation with your father.\n"
-    f"{nor.capitalize()} pondered this, examining {father.capitalize()} before telling you the way to save {father.capitalize()} is by delving into the tomb yourself\n" 
+    "She was named Nor, you asked for her aid, mention the situation with your father.\n"
+    "Nor pondered this, examining Glaen before telling you the way to save Glaen is by delving into the tomb yourself\n" 
     "and claiming the riches of Akarak  and defeating their guardians of Knowledge.\n" 
     "His tests of knowledge were to be respected, not cheated. Lest you suffer the same fate as your father.\n" 
     "Resolute and determined, you ready your gear and venture into the tomb, knowing the dangers but knowing the benefits.\n")
@@ -954,41 +944,39 @@ def welcome_message():
     cls()
 
 
-# cls()
-# welcome_message()
 
-# while True:
-#     cls()
-#     globals()
-#     story_intro()
+cls()
+welcome_message()
 
-#     while True:
-#         chc = input("Do you still want to continue?(y/n) ")
-#         if chc.lower() == 'y':
-#             input(f"Great. Remember, you only have {life} lives. Be careful.\nPress enter to continue...")
-#             break
-#         if chc.lower() == 'n':
-#             print("Bye...")
-#             exit()
-#         else:
-#             print("Type y for yes, n for no.")
+while True:
+    cls()
+    life = 3
+    story_intro()
+
+    while True:
+        chc = input("Do you still want to continue?(y/n) ")
+        if chc.lower() == 'y':
+            input(f"Great. Remember, you only have {life} lives. Be careful.\nPress enter to continue...")
+            break
+        if chc.lower() == 'n':
+            print("Bye...")
+            exit()
+        else:
+            print("Type y for yes, n for no.")
     
-#     cls()
+    cls()
 
-#     # Checks for succ/fail puzzle.
-#     passer = entry_room()
-
-#     if passer:
-#         passer = dung_room_1()
-#     if passer:
-#         passer = dung_room_2()
-#     if passer:
-#         passer = dung_room_3()
-#     if passer:
-#         passer = dung_explore_4()
-#     if passer:
-#         passer = epilogue_one()
-#     if passer:
-#         passer = finale()
-
-dung_room_2()
+    # Checks for succ/fail puzzle.
+    passer = entry_room()
+    if passer:
+        passer = dung_room_1()
+    if passer:
+        passer = dung_room_2()
+    if passer:
+        passer = dung_room_3()
+    if passer:
+        passer = dung_explore_4()
+    if passer:
+        passer = epilogue_one()
+    if passer:
+        passer = finale()
