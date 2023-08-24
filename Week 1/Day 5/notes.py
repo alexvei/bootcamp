@@ -1,3 +1,4 @@
+import random
 # numbers = [
 #     1,
 #     2,
@@ -19,3 +20,5 @@
 # for loop, while loop, do...while loop
 # for loop, the number of iterations is known
 # while loop, the number of iterations is not known
+for i in reversed(range(11)):
+    print(i)

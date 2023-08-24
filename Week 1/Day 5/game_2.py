@@ -44,7 +44,7 @@ def computer():
 def win(pl, np):
     if pl == np:
         print("Draw")
-    if pl > np and np == 2:
+    if pl > np:
         print("Player wins!")
     else:
         print("Computer wins!")
