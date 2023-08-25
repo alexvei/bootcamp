@@ -28,7 +28,12 @@ def continuation_choice():
     slow_writting("Do you wish to explore more?(y/n) \n")
     user_choice = input("Choice: ")
     cls()
-    return True if user_choice.lower() == 'y' else False
+    if user_choice.lower() == 'y':
+        return True
+    elif user_choice.lower() == 'n':
+        return False
+    else:
+        continuation_choice()
 
 
 def exploration_options(options_dict):
