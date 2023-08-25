@@ -223,8 +223,11 @@ def dung_explore_1_choices(chc):
         "\"It is rare to see one so respectful of the past... you deserve to be rewarded. I hope this proves a lesson to you just as much as it did for me.\"\n"
         "You take the orb of life and place it into your vessel, it thrums with energies as you embrace it.\n"
         "The dead stand with you, as allies. Willing to retrieve you from whatever afterlife you find yourself in.\n"
-        "You head towards the doorway, nodding in thanks towards the Akari before heading down. It waves as you do.\n\n")
+        "You head towards the doorway, nodding in thanks towards the Akari before heading down. It waves as you do.\n"
+        "(Gain +1 Life)\n\n")
         slow_writting(message)
+        life_system(1, 0)
+        print(f"Total life: {life}")
         return True
     
     if chc == 4:
