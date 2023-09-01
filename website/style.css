@@ -87,5 +87,41 @@ body {
 
 .botnav ul li {
     display: inline-block;
-    margin: 0 10px; /* Adjust the spacing between links */
+    margin: 0 10px;
+}
+
+
+.bouquets_message {
+    margin-top: 100px;
+    text-align: center;
+}
+
+/* Styles for the image list */
+.image-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+ul.image-list li {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Styles for the images */
+.image-list img {
+    max-width: 200px; 
+    max-height: 150px;
+    width: auto;
+    height: auto;
+}
+
+
+/* Styles for the captions */
+.image-list p.caption {
+    font-size: 18px;
+    margin-top: 10px;
 }
