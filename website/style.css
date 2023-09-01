@@ -1,11 +1,68 @@
-.header {
-    padding: 80px; /* some padding */
-    text-align: center; /* center the text */
-    background: #1abc9c; /* green background */
-    color: white; /* white text color */
-  }
-  
-  /* Increase the font size of the <h1> element */
-  .header h1 {
-    font-size: 40px;
-  }
+/* Reset default margin and padding for various elements */
+body, ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Global styles */
+body {
+    background-color: #1b1e18;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #DDA0DD;
+}
+
+/* Styles for the top and bottom navigation bars */
+.topnav, .botnav {
+    background-color: #2f332d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+}
+
+.topnav {
+    top: 0;
+    left: 0;
+}
+
+.botnav {
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+}
+
+/* Styles for the left and right parts of the navigation bars */
+.left {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.right {
+    text-align: center;
+    margin-right: 20px;
+}
+
+/* Styles for the navigation links */
+.right ul li,
+.botnav ul li {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.right ul li a,
+.botnav ul li a {
+    color: #DCC6E0;
+    text-decoration: none;
+}
+
+/* Styles for centering elements */
+.center-image, .welcome_message {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.welcome_message {
+    margin-bottom: 50px;
+}
