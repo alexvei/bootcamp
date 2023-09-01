@@ -1,8 +1,7 @@
-/* Reset default margin and padding for various elements */
-body, ul, li {
+/* Reset default margin, padding, and list style for the body element */
+body {
     margin: 0;
     padding: 0;
-    list-style: none;
 }
 
 /* Global styles */
@@ -12,45 +11,51 @@ body {
     color: #DDA0DD;
 }
 
-/* Styles for the top and bottom navigation bars */
-.topnav, .botnav {
+/* Styles for the top navigation bar */
+.topnav {
     background-color: #2f332d;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: fixed;
     width: 100%;
-}
-
-.topnav {
     top: 0;
     left: 0;
 }
 
+/* Styles for the bottom navigation bar */
 .botnav {
+    background-color: #2f332d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
     bottom: 0;
     left: 0;
     padding: 10px;
 }
 
-/* Styles for the left and right parts of the navigation bars */
+/* Styles for the left part of the navigation bars */
 .left {
     flex-grow: 1;
     margin-left: 20px;
 }
 
+
+/* Styles for the right part of the navigation bars */
 .right {
     text-align: center;
     margin-right: 20px;
 }
 
 /* Styles for the navigation links */
-.right ul li,
-.botnav ul li {
+.right ul li {
     display: inline-block;
     margin-left: 20px;
 }
 
+.left a,
 .right ul li a,
 .botnav ul li a {
     color: #DCC6E0;
@@ -65,4 +70,22 @@ body {
 
 .welcome_message {
     margin-bottom: 50px;
+}
+
+/* Center the text within the <ul> element of the bottom navigation bar */
+.botnav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: auto;
+}
+
+.botnav ul li {
+    display: inline-block;
+    margin: 0 10px; /* Adjust the spacing between links */
 }
