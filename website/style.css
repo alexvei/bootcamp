@@ -1,26 +1,51 @@
-/* Reset default margin, padding, and list style for the body element */
-body {
-    margin: 0;
-    padding: 0;
-}
-
 /* Global styles */
 body {
     background-color: #1b1e18;
     font-family: Arial, Helvetica, sans-serif;
     color: #DDA0DD;
+    margin: 0;
+    padding: 0;
 }
 
-/* Styles for the top navigation bar */
-.topnav {
-    background-color: #2f332d;
+/* Styles for centering elements */
+.center-image, .welcome_message {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.welcome_message {
+    margin-bottom: 50px;
+}
+
+/* CSS for centering the table */
+.business-hours {
+    text-align: center;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
+    height: 100vh;
+}
+
+/* Style for the table */
+.business-hours table {
+    border-collapse: collapse;
+    width: 80%;
+    max-width: 600px;
+    color: #Fffdfa;
+}
+
+/* Style for table headers (th) */
+.business-hours th {
+    background-color: #2f332d;
+    color: #Fffdfa;
+    padding: 10px;
+}
+
+/* Style for table data cells (td) */
+.business-hours td {
+    padding: 10px;
+    border: 1px solid #ddd;
 }
 
 /* Styles for the bottom navigation bar */
@@ -36,43 +61,6 @@ body {
     padding: 10px;
 }
 
-/* Styles for the left part of the navigation bars */
-.left {
-    flex-grow: 1;
-    margin-left: 20px;
-}
-
-
-/* Styles for the right part of the navigation bars */
-.right {
-    text-align: center;
-    margin-right: 20px;
-}
-
-/* Styles for the navigation links */
-.right ul li {
-    display: inline-block;
-    margin-left: 20px;
-}
-
-.left a,
-.right ul li a,
-.botnav ul li a {
-    color: #DCC6E0;
-    text-decoration: none;
-}
-
-/* Styles for centering elements */
-.center-image, .welcome_message {
-    text-align: center;
-    margin-top: 5px;
-}
-
-.welcome_message {
-    margin-bottom: 50px;
-}
-
-/* Center the text within the <ul> element of the bottom navigation bar */
 .botnav ul {
     list-style: none;
     margin: 0;
@@ -90,11 +78,48 @@ body {
     margin: 0 10px;
 }
 
+.botnav ul li a {
+    color: #DCC6E0;
+    text-decoration: none;
+}
 
+/* Styles for the bouquets message */
 .bouquets_message {
     margin-top: 100px;
     text-align: center;
     color: white;
+}
+
+/* Styles for the top navigation bar */
+.topnav {
+    background-color: #2f332d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.topnav a {
+    color: #DCC6E0;
+    text-decoration: none;
+}
+
+.topnav .left {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.topnav .right {
+    text-align: center;
+    margin-right: 20px;
+}
+
+.topnav .right ul li {
+    display: inline-block;
+    margin-left: 20px;
 }
 
 /* Styles for the image list */
@@ -106,8 +131,7 @@ body {
     justify-content: space-between;
 }
 
-
-ul.image-list li {
+.image-list li {
     text-align: center;
     margin: 0;
     padding: 0;
@@ -115,16 +139,13 @@ ul.image-list li {
     margin-bottom: 20px;
 }
 
-/* Styles for the images */
 .image-list img {
-    max-width: 200px; 
+    max-width: 200px;
     max-height: 150px;
     width: auto;
     height: auto;
 }
 
-
-/* Styles for the captions */
 .image-list p.caption {
     font-size: 18px;
     margin-top: 10px;
